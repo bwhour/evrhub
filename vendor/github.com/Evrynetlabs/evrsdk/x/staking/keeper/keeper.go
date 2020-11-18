@@ -6,10 +6,10 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/params"
-	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
+	"github.com/Evrynetlabs/evrsdk/x/params"
+	"github.com/Evrynetlabs/evrsdk/x/staking/types"
 )
 
 const aminoCacheSize = 500

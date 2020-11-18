@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/cosmos/cosmos-sdk/x/supply/exported"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
+	"github.com/Evrynetlabs/evrsdk/x/staking/types"
+	"github.com/Evrynetlabs/evrsdk/x/supply/exported"
 )
 
 // GetBondedPool returns the bonded tokens pool's module account

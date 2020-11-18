@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/x/auth/exported"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	"github.com/Evrynetlabs/evrsdk/x/auth/exported"
 )
 
 // GenesisState - all auth state that must be provided at genesis

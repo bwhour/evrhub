@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/types/rest"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/Evrynetlabs/evrsdk/client/context"
+	"github.com/Evrynetlabs/evrsdk/types/rest"
+	authtypes "github.com/Evrynetlabs/evrsdk/x/auth/types"
 )
 
 type (

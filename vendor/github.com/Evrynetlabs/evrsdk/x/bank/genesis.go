@@ -1,7 +1,7 @@
 package bank
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 // InitGenesis sets distribution information for genesis.

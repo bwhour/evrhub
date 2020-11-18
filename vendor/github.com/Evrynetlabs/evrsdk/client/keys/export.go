@@ -6,10 +6,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/client/input"
-	"github.com/cosmos/cosmos-sdk/crypto/keys"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/Evrynetlabs/evrsdk/client/flags"
+	"github.com/Evrynetlabs/evrsdk/client/input"
+	"github.com/Evrynetlabs/evrsdk/crypto/keys"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 // ExportKeyCommand exports private keys from the key store.

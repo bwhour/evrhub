@@ -1,7 +1,7 @@
 package baseapp
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 type state struct {

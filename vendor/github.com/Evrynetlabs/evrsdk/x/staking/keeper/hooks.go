@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
+	"github.com/Evrynetlabs/evrsdk/x/staking/types"
 )
 
 // Implements StakingHooks interface

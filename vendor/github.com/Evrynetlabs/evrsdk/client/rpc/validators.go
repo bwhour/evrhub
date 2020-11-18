@@ -13,11 +13,11 @@ import (
 
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/rest"
+	"github.com/Evrynetlabs/evrsdk/client/context"
+	"github.com/Evrynetlabs/evrsdk/client/flags"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
+	"github.com/Evrynetlabs/evrsdk/types/rest"
 )
 
 // TODO these next two functions feel kinda hacky based on their placement

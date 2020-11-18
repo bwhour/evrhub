@@ -9,11 +9,11 @@ import (
 
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
 
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/types/rest"
-	"github.com/cosmos/cosmos-sdk/version"
+	"github.com/Evrynetlabs/evrsdk/client/context"
+	"github.com/Evrynetlabs/evrsdk/client/flags"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	"github.com/Evrynetlabs/evrsdk/types/rest"
+	"github.com/Evrynetlabs/evrsdk/version"
 
 	"github.com/tendermint/tendermint/p2p"
 )

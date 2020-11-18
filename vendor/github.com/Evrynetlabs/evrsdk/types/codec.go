@@ -1,6 +1,6 @@
 package types
 
-import "github.com/cosmos/cosmos-sdk/codec"
+import "github.com/Evrynetlabs/evrsdk/codec"
 
 // Register the sdk message type
 func RegisterCodec(cdc *codec.Codec) {

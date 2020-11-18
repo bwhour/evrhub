@@ -15,8 +15,8 @@ import (
 	"github.com/tendermint/tendermint/libs/bech32"
 	"github.com/tendermint/tendermint/libs/cli"
 
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/Evrynetlabs/evrsdk/client/flags"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 func bech32Prefixes(config *sdk.Config) []string {

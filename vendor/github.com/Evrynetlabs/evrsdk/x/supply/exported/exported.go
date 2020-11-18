@@ -1,9 +1,9 @@
 package exported
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 
-	"github.com/cosmos/cosmos-sdk/x/auth/exported"
+	"github.com/Evrynetlabs/evrsdk/x/auth/exported"
 )
 
 // ModuleAccountI defines an account interface for modules that hold tokens in an escrow

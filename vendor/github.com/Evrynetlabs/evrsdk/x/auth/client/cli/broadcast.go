@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
+	"github.com/Evrynetlabs/evrsdk/client/context"
+	"github.com/Evrynetlabs/evrsdk/client/flags"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	"github.com/Evrynetlabs/evrsdk/x/auth/client/utils"
 )
 
 // GetBroadcastCommand returns the tx broadcast command.

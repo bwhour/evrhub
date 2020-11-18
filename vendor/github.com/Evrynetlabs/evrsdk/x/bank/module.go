@@ -10,16 +10,16 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/cosmos/cosmos-sdk/x/bank/client/cli"
-	"github.com/cosmos/cosmos-sdk/x/bank/client/rest"
-	"github.com/cosmos/cosmos-sdk/x/bank/internal/keeper"
-	"github.com/cosmos/cosmos-sdk/x/bank/internal/types"
-	"github.com/cosmos/cosmos-sdk/x/bank/simulation"
-	sim "github.com/cosmos/cosmos-sdk/x/simulation"
+	"github.com/Evrynetlabs/evrsdk/client/context"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
+	"github.com/Evrynetlabs/evrsdk/types/module"
+	"github.com/Evrynetlabs/evrsdk/x/bank/client/cli"
+	"github.com/Evrynetlabs/evrsdk/x/bank/client/rest"
+	"github.com/Evrynetlabs/evrsdk/x/bank/internal/keeper"
+	"github.com/Evrynetlabs/evrsdk/x/bank/internal/types"
+	"github.com/Evrynetlabs/evrsdk/x/bank/simulation"
+	sim "github.com/Evrynetlabs/evrsdk/x/simulation"
 )
 
 var (

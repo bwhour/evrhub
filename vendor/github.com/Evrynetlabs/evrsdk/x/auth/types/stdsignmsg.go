@@ -1,7 +1,7 @@
 package types
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 // StdSignMsg is a convenience structure for passing along

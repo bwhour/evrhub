@@ -1,8 +1,8 @@
 package types
 
 import (
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/x/auth/exported"
+	"github.com/Evrynetlabs/evrsdk/codec"
+	"github.com/Evrynetlabs/evrsdk/x/auth/exported"
 )
 
 // ModuleCdc auth module wide codec
