@@ -3,36 +3,34 @@ package relayer
 import (
 	"context"
 	"crypto/ecdsa"
+	ctypes "github.com/ethereum/go-ethereum/core/types"
 	"os"
-	"os/signal"
-	"syscall"
+	"fmt"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/Evrynetlabs/evrynet-node/core/types"
 	tmKv "github.com/tendermint/tendermint/libs/kv"
 	tmLog "github.com/tendermint/tendermint/libs/log"
-	tmClient "github.com/tendermint/tendermint/rpc/client"
-	tmTypes "github.com/tendermint/tendermint/types"
-
-	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/txs"
+       "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/txs"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/types"
 )
 
-// TODO: Move relay functionality out of CosmosSub into a new Relayer parent struct
+// TODO: Move relay functionality out of EvrnetSub into a new Relayer parent struct
 
-// CosmosSub defines a Cosmos listener that relays events to Ethereum and Cosmos
-type CosmosSub struct {
-	TmProvider              string
+// EvrnetSub defines a Cosmos listener that relays events to Ethereum and Evrnet
+type EvrnetSub struct {
+	EvrProvider           string
 	EthProvider             string
 	RegistryContractAddress common.Address
 	PrivateKey              *ecdsa.PrivateKey
 	Logger                  tmLog.Logger
 }
 
-// NewCosmosSub initializes a new CosmosSub
-func NewCosmosSub(tmProvider, ethProvider string, registryContractAddress common.Address,
-	privateKey *ecdsa.PrivateKey, logger tmLog.Logger) CosmosSub {
-	return CosmosSub{
-		TmProvider:              tmProvider,
+// NewEvrnetSub initializes a new EvrnetSub
+func NewEvrnetSub(evrProvider, ethProvider string, registryContractAddress common.Address,
+	privateKey *ecdsa.PrivateKey, logger tmLog.Logger) EvrnetSub {
+	return EvrnetSub{
+		EvrProvider:             evrProvider,
 		EthProvider:             ethProvider,
 		RegistryContractAddress: registryContractAddress,
 		PrivateKey:              privateKey,
@@ -41,58 +39,58 @@ func NewCosmosSub(tmProvider, ethProvider string, registryContractAddress common
 }
 
 // Start a Cosmos chain subscription
-func (sub CosmosSub) Start() {
-	client, err := tmClient.NewHTTP(sub.TmProvider, "/websocket")
+func (sub EvrnetSub) Start() {
+	client, err := SetupWebsocketEvrClient(sub.EvrProvider)
 	if err != nil {
-		sub.Logger.Error("failed to initialize a client", "err", err)
+		sub.Logger.Error(err.Error())
 		os.Exit(1)
 	}
-	client.SetLogger(sub.Logger)
+	sub.Logger.Info("Started Ethereum websocket with provider:", sub.EthProvider)
 
-	if err := client.Start(); err != nil {
-		sub.Logger.Error("failed to start a client", "err", err)
-		os.Exit(1)
-	}
-
-	defer client.Stop() //nolint:errcheck
-
-	// Subscribe to all tendermint transactions
-	query := "tm.event = 'Tx'"
-	out, err := client.Subscribe(context.Background(), "test", query, 1000)
+	clientChainID, err := client.NetworkID(context.Background())
 	if err != nil {
-		sub.Logger.Error("failed to subscribe to query", "err", err, "query", query)
+		sub.Logger.Error(err.Error())
 		os.Exit(1)
 	}
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-
+	// We will check logs for new events
+	logs := make(chan ctypes.Log)
 	for {
 		select {
-		case result := <-out:
-			tx, ok := result.Data.(tmTypes.EventDataTx)
-			if !ok {
-				sub.Logger.Error("new tx: error while extracting event data from new tx")
+		// vLog is raw event data
+		case vLog := <-logs:
+			sub.Logger.Info(fmt.Sprintf("Witnessed tx %s on block %d\n", vLog.TxHash.Hex(), vLog.BlockNumber))
+			var err error
+			switch vLog.Topics[0].Hex() {
+			//case eventLogBurnSignature:
+			//	err = sub.handleEthereumEvent(clientChainID, bridgeBankAddress, bridgeBankContractABI,
+			//		types.LogBurn.String(), vLog)
+			//case eventLogLockSignature:
+			//	err = sub.handleEthereumEvent(clientChainID, bridgeBankAddress, bridgeBankContractABI,
+			//		types.LogLock.String(), vLog)
+			//case eventLogNewProphecyClaimSignature:
+			//	err = sub.handleLogNewProphecyClaim(cosmosBridgeAddress, cosmosBridgeContractABI,
+			//		types.LogNewProphecyClaim.String(), vLog)
 			}
-			sub.Logger.Info("New transaction witnessed")
-
-			// Iterate over each event in the transaction
-			for _, event := range tx.Result.Events {
-				claimType := getOracleClaimType(event.GetType())
-
-				switch claimType {
-				case types.MsgBurn, types.MsgLock:
-					// Parse event data, then package it as a ProphecyClaim and relay to the Ethereum Network
-					err := sub.handleBurnLockMsg(event.GetAttributes(), claimType)
-					if err != nil {
-						sub.Logger.Error(err.Error())
-					}
-				}
+			// TODO: Check local events store for status, if retryable, attempt relay again
+			if err != nil {
+				sub.Logger.Error(err.Error())
 			}
-		case <-quit:
-			os.Exit(0)
 		}
 	}
+			// Iterate over each event in the transaction
+			//for _, event := range tx.Result.Events {
+			//	claimType := getOracleClaimType(event.GetType())
+			//
+			//	switch claimType {
+			//	case types.MsgBurn, types.MsgLock:
+			//		// Parse event data, then package it as a ProphecyClaim and relay to the Ethereum Network
+			//		err := sub.handleBurnLockMsg(event.GetAttributes(), claimType)
+			//		if err != nil {
+			//			sub.Logger.Error(err.Error())
+			//		}
+			//	}
+			//}
+
 }
 
 // getOracleClaimType sets the OracleClaim's claim type based upon the witnessed event type
@@ -110,7 +108,7 @@ func getOracleClaimType(eventType string) types.Event {
 }
 
 // Parses event data from the msg, event, builds a new ProphecyClaim, and relays it to Ethereum
-func (sub CosmosSub) handleBurnLockMsg(attributes []tmKv.Pair, claimType types.Event) error {
+func (sub EvrnetSub) handleBurnLockMsg(attributes []tmKv.Pair, claimType types.Event) error {
 	cosmosMsg := txs.BurnLockEventToCosmosMsg(claimType, attributes)
 	sub.Logger.Info(cosmosMsg.String())
 

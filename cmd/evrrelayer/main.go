@@ -158,7 +158,7 @@ func RunInitRelayerCmd(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	// Initialize new Cosmos event listener
-	cosmosSub := relayer.NewCosmosSub(tendermintNode, web3Provider, contractAddress, privateKey, logger)
+	cosmosSub := relayer.NewEvrnetSub(tendermintNode, web3Provider, contractAddress, privateKey, logger)
 
 	go ethSub.Start()
 	go cosmosSub.Start()

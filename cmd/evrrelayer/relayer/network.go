@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Evrynetlabs/evrynet-node/evrclient"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
@@ -28,6 +29,23 @@ func SetupWebsocketEthClient(ethURL string) (*ethclient.Client, error) {
 	}
 
 	client, err := ethclient.Dial(ethURL)
+	if err != nil {
+		return nil, err
+	}
+
+	return client, nil
+}
+// SetupWebsocketEthClient returns boolean indicating if a URL is valid websocket ethclient
+func SetupWebsocketEvrClient(evrURL string) (*evrclient.Client, error) {
+	if strings.TrimSpace(evrURL) == "" {
+		return nil, nil
+	}
+
+	if !IsWebsocketURL(evrURL) {
+		return nil, fmt.Errorf("invalid websocket eth client URL: %s", evrURL)
+	}
+
+	client, err := evrclient.Dial(evrURL)
 	if err != nil {
 		return nil, err
 	}
