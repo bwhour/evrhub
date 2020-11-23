@@ -21,7 +21,7 @@ func TestLogLockToEthBridgeClaim(t *testing.T) {
 	testTokenContractAddress := ethbridge.NewEthereumAddress(TestEthTokenAddress)
 	testEthereumAddress := ethbridge.NewEthereumAddress(TestEthereumAddress1)
 	// Cosmos account address
-	testCosmosAddress, err := sdk.AccAddressFromBech32(TestCosmosAddress1)
+	testCosmosAddress, err := sdk.AccAddressFromBech32(TestEvrnetAddress1)
 	require.NoError(t, err)
 	// Cosmos validator address
 	testRawCosmosValidatorAddress, err := sdk.AccAddressFromBech32(TestCosmosAddress2)
@@ -80,7 +80,7 @@ func TestProphecyClaimToSignedOracleClaim(t *testing.T) {
 
 func TestBurnEventToCosmosMsg(t *testing.T) {
 	// Set up expected MsgBurn
-	expectedMsgBurn := CreateTestCosmosMsg(t, types.MsgBurn)
+	expectedMsgBurn := CreateTestEvrnetMsg(t, types.MsgBurn)
 
 	// Create MsgBurn attributes as input parameter
 	cosmosMsgAttributes := CreateCosmosMsgAttributes(t, types.MsgBurn)
@@ -91,7 +91,7 @@ func TestBurnEventToCosmosMsg(t *testing.T) {
 
 func TestLockEventToCosmosMsg(t *testing.T) {
 	// Set up expected MsgLock
-	expectedMsgLock := CreateTestCosmosMsg(t, types.MsgLock)
+	expectedMsgLock := CreateTestEvrnetMsg(t, types.MsgLock)
 
 	// Create MsgLock attributes as input parameter
 	cosmosMsgAttributes := CreateCosmosMsgAttributes(t, types.MsgLock)
@@ -108,7 +108,7 @@ func TestMsgBurnToProphecyClaim(t *testing.T) {
 	// Set up expected ProphecyClaim
 	expectedProphecyClaim := ProphecyClaim{
 		ClaimType:        types.MsgBurn,
-		CosmosSender:     []byte(TestCosmosAddress1),
+		EvrnetSender:     []byte(TestEvrnetAddress1),
 		EthereumReceiver: common.HexToAddress(TestEthereumAddress1),
 		Symbol:           symbol,
 		Amount:           big.NewInt(int64(TestAmount)),
@@ -116,7 +116,7 @@ func TestMsgBurnToProphecyClaim(t *testing.T) {
 
 	// Create a MsgBurn as input parameter
 	testCosmosMsgBurn := CreateTestCosmosMsg(t, types.MsgBurn)
-	prophecyClaim := CosmosMsgToProphecyClaim(testCosmosMsgBurn)
+	prophecyClaim := EvrnetMsgToProphecyClaim(testCosmosMsgBurn)
 
 	require.Equal(t, expectedProphecyClaim, prophecyClaim)
 }
@@ -125,7 +125,7 @@ func TestMsgLockToProphecyClaim(t *testing.T) {
 	// Set up expected ProphecyClaim
 	expectedProphecyClaim := ProphecyClaim{
 		ClaimType:        types.MsgLock,
-		CosmosSender:     []byte(TestCosmosAddress1),
+		EvrnetSender:     []byte(TestCosmosAddress1),
 		EthereumReceiver: common.HexToAddress(TestEthereumAddress1),
 		Symbol:           TestSymbol,
 		Amount:           big.NewInt(int64(TestAmount)),
@@ -133,7 +133,7 @@ func TestMsgLockToProphecyClaim(t *testing.T) {
 
 	// Create a MsgLock as input parameter
 	testCosmosMsgLock := CreateTestCosmosMsg(t, types.MsgLock)
-	prophecyClaim := CosmosMsgToProphecyClaim(testCosmosMsgLock)
+	prophecyClaim := EvrnetMsgToProphecyClaim(testCosmosMsgLock)
 
 	require.Equal(t, expectedProphecyClaim, prophecyClaim)
 }

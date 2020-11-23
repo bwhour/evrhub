@@ -13,11 +13,11 @@ import (
 type Event byte
 
 const (
-	// Unsupported is an invalid Cosmos or Ethereum event
+	// Unsupported is an invalid Evrnet or Ethereum event
 	Unsupported Event = iota
-	// MsgBurn is a Cosmos msg of type MsgBurn
+	// MsgBurn is a Evrnet msg of type MsgBurn
 	MsgBurn
-	// MsgLock is a Cosmos msg of type MsgLock
+	// MsgLock is a Evrnet msg of type MsgLock
 	MsgLock
 	// LogLock is for Ethereum event LogLock
 	LogLock
@@ -56,7 +56,7 @@ func (e EthereumEvent) String() string {
 
 // ProphecyClaimEvent struct which represents a LogNewProphecyClaim event
 type ProphecyClaimEvent struct {
-	CosmosSender     []byte
+	EvrnetSender     []byte
 	Symbol           string
 	ProphecyID       *big.Int
 	Amount           *big.Int
@@ -67,10 +67,10 @@ type ProphecyClaimEvent struct {
 }
 
 // NewProphecyClaimEvent creates a new ProphecyClaimEvent
-func NewProphecyClaimEvent(cosmosSender []byte, symbol string, prophecyID, amount *big.Int, ethereumReceiver,
+func NewProphecyClaimEvent(evrnetSender []byte, symbol string, prophecyID, amount *big.Int, ethereumReceiver,
 	validatorAddress, tokenAddress common.Address, claimType uint8) ProphecyClaimEvent {
 	return ProphecyClaimEvent{
-		CosmosSender:     cosmosSender,
+		EvrnetSender:     evrnetSender,
 		Symbol:           symbol,
 		ProphecyID:       prophecyID,
 		Amount:           amount,
@@ -85,25 +85,25 @@ func NewProphecyClaimEvent(cosmosSender []byte, symbol string, prophecyID, amoun
 func (p ProphecyClaimEvent) String() string {
 	return fmt.Sprintf("\nProphecy ID: %v\nClaim Type: %v\nSender: %v\n"+
 		"Recipient: %v\nSymbol: %v\nToken: %v\nAmount: %v\nValidator: %v\n\n",
-		p.ProphecyID, p.ClaimType, string(p.CosmosSender), p.EthereumReceiver.Hex(),
+		p.ProphecyID, p.ClaimType, string(p.EvrnetSender), p.EthereumReceiver.Hex(),
 		p.Symbol, p.TokenAddress.Hex(), p.Amount, p.ValidatorAddress.Hex())
 }
 
-// CosmosMsg contains data from MsgBurn and MsgLock events
-type CosmosMsg struct {
+// EvrnetMsg contains data from MsgBurn and MsgLock events
+type EvrnetMsg struct {
 	ClaimType        Event
-	CosmosSender     []byte
+	EvrnetSender     []byte
 	EthereumReceiver common.Address
 	Symbol           string
 	Amount           *big.Int
 }
 
-// NewCosmosMsg creates a new CosmosMsg
-func NewCosmosMsg(claimType Event, cosmosSender []byte, ethereumReceiver common.Address, symbol string,
-	amount *big.Int) CosmosMsg {
-	return CosmosMsg{
+// NewEvrnetMsg creates a new EvrnetMsg
+func NewEvrnetMsg(claimType Event, evrnetSender []byte, ethereumReceiver common.Address, symbol string,
+	amount *big.Int) EvrnetMsg {
+	return EvrnetMsg{
 		ClaimType:        claimType,
-		CosmosSender:     cosmosSender,
+		EvrnetSender:     evrnetSender,
 		EthereumReceiver: ethereumReceiver,
 		Symbol:           symbol,
 		Amount:           amount,
@@ -111,25 +111,25 @@ func NewCosmosMsg(claimType Event, cosmosSender []byte, ethereumReceiver common.
 }
 
 // String implements fmt.Stringer
-func (c CosmosMsg) String() string {
+func (c EvrnetMsg) String() string {
 	if c.ClaimType == MsgLock {
-		return fmt.Sprintf("\nClaim Type: %v\nCosmos Sender: %v\nEthereum Recipient: %v"+
+		return fmt.Sprintf("\nClaim Type: %v\nEvrnet Sender: %v\nEthereum Recipient: %v"+
 			"\nSymbol: %v\nAmount: %v\n",
-			c.ClaimType.String(), string(c.CosmosSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
+			c.ClaimType.String(), string(c.EvrnetSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
 	}
-	return fmt.Sprintf("\nClaim Type: %v\nCosmos Sender: %v\nEthereum Recipient: %v"+
+	return fmt.Sprintf("\nClaim Type: %v\nEvrnet Sender: %v\nEthereum Recipient: %v"+
 		"\nSymbol: %v\nAmount: %v\n",
-		c.ClaimType.String(), string(c.CosmosSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
+		c.ClaimType.String(), string(c.EvrnetSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
 }
 
-// CosmosMsgAttributeKey enum containing supported attribute keys
-type CosmosMsgAttributeKey int
+// EvrnetMsgAttributeKey enum containing supported attribute keys
+type EvrnetMsgAttributeKey int
 
 const (
 	// UnsupportedAttributeKey unsupported attribute key
-	UnsupportedAttributeKey CosmosMsgAttributeKey = iota
-	// CosmosSender sender's address on Cosmos network
-	CosmosSender
+	UnsupportedAttributeKey EvrnetMsgAttributeKey = iota
+	// EvrnetSender sender's address on Evrnet network
+	EvrnetSender
 	// EthereumReceiver receiver's address on Ethereum network
 	EthereumReceiver
 	// Amount is coin's value
@@ -139,6 +139,6 @@ const (
 )
 
 // String returns the event type as a string
-func (d CosmosMsgAttributeKey) String() string {
-	return [...]string{"unsupported", "cosmos_sender", "ethereum_receiver", "amount", "symbol"}[d]
+func (d EvrnetMsgAttributeKey) String() string {
+	return [...]string{"unsupported", "evrnet_sender", "ethereum_receiver", "amount", "symbol"}[d]
 }

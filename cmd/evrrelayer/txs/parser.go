@@ -105,17 +105,17 @@ func ProphecyClaimToSignedOracleClaim(event types.ProphecyClaimEvent, key *ecdsa
 	return oracleClaim, nil
 }
 
-// CosmosMsgToProphecyClaim parses event data from a CosmosMsg, packaging it as a ProphecyClaim
-func CosmosMsgToProphecyClaim(event types.CosmosMsg) ProphecyClaim {
+// EvrnetMsgToProphecyClaim parses event data from a EvrnetMsg, packaging it as a ProphecyClaim
+func EvrnetMsgToProphecyClaim(event types.EvrnetMsg) ProphecyClaim {
 	claimType := event.ClaimType
-	cosmosSender := event.CosmosSender
+	evrnetSender := event.EvrnetSender
 	ethereumReceiver := event.EthereumReceiver
 	symbol := strings.ToUpper(event.Symbol)
 	amount := event.Amount
 
 	prophecyClaim := ProphecyClaim{
 		ClaimType:        claimType,
-		CosmosSender:     cosmosSender,
+		EvrnetSender:     evrnetSender,
 		EthereumReceiver: ethereumReceiver,
 		Symbol:           symbol,
 		Amount:           amount,
@@ -123,9 +123,9 @@ func CosmosMsgToProphecyClaim(event types.CosmosMsg) ProphecyClaim {
 	return prophecyClaim
 }
 
-// BurnLockEventToCosmosMsg parses data from a Burn/Lock event witnessed on Cosmos into a CosmosMsg struct
-func BurnLockEventToCosmosMsg(claimType types.Event, attributes []tmKv.Pair) types.CosmosMsg {
-	var cosmosSender []byte
+// BurnLockEventToCosmosMsg parses data from a Burn/Lock event witnessed on Cosmos into a EvrnetMsg struct
+func BurnLockEventToCosmosMsg(claimType types.Event, attributes []tmKv.Pair) types.EvrnetMsg {
+	var evrnetSender []byte
 	var ethereumReceiver common.Address
 	var symbol string
 	var amount *big.Int
@@ -136,8 +136,8 @@ func BurnLockEventToCosmosMsg(claimType types.Event, attributes []tmKv.Pair) typ
 
 		// Set variable based on the attribute's key
 		switch key {
-		case types.CosmosSender.String():
-			cosmosSender = []byte(val)
+		case types.EvrnetSender.String():
+			evrnetSender = []byte(val)
 		case types.EthereumReceiver.String():
 			if !common.IsHexAddress(val) {
 				log.Fatal("Invalid recipient address:", val)
@@ -162,7 +162,7 @@ func BurnLockEventToCosmosMsg(claimType types.Event, attributes []tmKv.Pair) typ
 			amount = tempAmount
 		}
 	}
-	return types.NewCosmosMsg(claimType, cosmosSender, ethereumReceiver, symbol, amount)
+	return types.NewEvrnetMsg(claimType, evrnetSender, ethereumReceiver, symbol, amount)
 }
 
 // isZeroAddress checks an Ethereum address and returns a bool which indicates if it is the null address

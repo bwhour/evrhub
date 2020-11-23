@@ -56,7 +56,7 @@ func LoadSender() (address common.Address, err error) {
 // GenerateClaimMessage Generates a hashed message containing a ProphecyClaim event's data
 func GenerateClaimMessage(event types.ProphecyClaimEvent) []byte {
 	prophecyID := solsha3.Int256(event.ProphecyID)
-	sender := solsha3.String(event.CosmosSender)
+	sender := solsha3.String(event.EvrnetSender)
 	recipient := solsha3.Int256(event.EthereumReceiver.Hex())
 	token := solsha3.String(event.TokenAddress.Hex())
 	amount := solsha3.Int256(event.Amount)

@@ -113,7 +113,7 @@ func (sub EvrnetSub) handleBurnLockMsg(attributes []tmKv.Pair, claimType types.E
 	sub.Logger.Info(cosmosMsg.String())
 
 	// TODO: Ideally one validator should relay the prophecy and other validators make oracle claims upon that prophecy
-	prophecyClaim := txs.CosmosMsgToProphecyClaim(cosmosMsg)
+	prophecyClaim := txs.EvrnetMsgToProphecyClaim(cosmosMsg)
 	err := txs.RelayProphecyClaimToEthereum(sub.EthProvider, sub.RegistryContractAddress,
 		claimType, prophecyClaim, sub.PrivateKey)
 	if err != nil {
