@@ -76,13 +76,13 @@ func handleMsgBurn(
 	bridgeKeeper Keeper, msg MsgBurn,
 ) (*sdk.Result, error) {
 
-	account := accountKeeper.GetAccount(ctx, msg.CosmosSender)
+	account := accountKeeper.GetAccount(ctx, msg.EvrnetSender)
 	if account == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CosmosSender.String())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetSender.String())
 	}
 
 	coins := sdk.NewCoins(sdk.NewInt64Coin(msg.Symbol, msg.Amount))
-	if err := bridgeKeeper.ProcessBurn(ctx, msg.CosmosSender, coins); err != nil {
+	if err := bridgeKeeper.ProcessBurn(ctx, msg.EvrnetSender, coins); err != nil {
 		return nil, err
 	}
 
@@ -90,12 +90,12 @@ func handleMsgBurn(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(sdk.AttributeKeySender, msg.CosmosSender.String()),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.EvrnetSender.String()),
 		),
 		sdk.NewEvent(
 			types.EventTypeBurn,
 			sdk.NewAttribute(types.AttributeKeyEthereumChainID, strconv.Itoa(msg.EthereumChainID)),
-			sdk.NewAttribute(types.AttributeKeyCosmosSender, msg.CosmosSender.String()),
+			sdk.NewAttribute(types.AttributeKeyCosmosSender, msg.EvrnetSender.String()),
 			sdk.NewAttribute(types.AttributeKeyEthereumReceiver, msg.EthereumReceiver.String()),
 			sdk.NewAttribute(types.AttributeKeyAmount, strconv.FormatInt(msg.Amount, 10)),
 			sdk.NewAttribute(types.AttributeKeySymbol, msg.Symbol),
@@ -112,13 +112,13 @@ func handleMsgLock(
 	bridgeKeeper Keeper, msg MsgLock,
 ) (*sdk.Result, error) {
 
-	account := accountKeeper.GetAccount(ctx, msg.CosmosSender)
+	account := accountKeeper.GetAccount(ctx, msg.EvrnetSender)
 	if account == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CosmosSender.String())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetSender.String())
 	}
 
 	coins := sdk.NewCoins(sdk.NewInt64Coin(msg.Symbol, msg.Amount))
-	if err := bridgeKeeper.ProcessLock(ctx, msg.CosmosSender, coins); err != nil {
+	if err := bridgeKeeper.ProcessLock(ctx, msg.EvrnetSender, coins); err != nil {
 		return nil, err
 	}
 
@@ -126,12 +126,12 @@ func handleMsgLock(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(sdk.AttributeKeySender, msg.CosmosSender.String()),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.EvrnetSender.String()),
 		),
 		sdk.NewEvent(
 			types.EventTypeLock,
 			sdk.NewAttribute(types.AttributeKeyEthereumChainID, strconv.Itoa(msg.EthereumChainID)),
-			sdk.NewAttribute(types.AttributeKeyCosmosSender, msg.CosmosSender.String()),
+			sdk.NewAttribute(types.AttributeKeyCosmosSender, msg.EvrnetSender.String()),
 			sdk.NewAttribute(types.AttributeKeyEthereumReceiver, msg.EthereumReceiver.String()),
 			sdk.NewAttribute(types.AttributeKeyAmount, strconv.FormatInt(msg.Amount, 10)),
 			sdk.NewAttribute(types.AttributeKeySymbol, msg.Symbol),

@@ -51,7 +51,7 @@ func CreateTestEthClaim(
 	return ethClaim
 }
 
-func CreateTestBurnMsg(t *testing.T, testCosmosSender string, ethereumReceiver EthereumAddress,
+func CreateTestBurnMsg(t *testing.T, testEvrnetSender string, ethereumReceiver EthereumAddress,
 	coinsAmount int64, coinsSymbol string) MsgBurn {
 	testCosmosAddress, err := sdk.AccAddressFromBech32(TestAddress)
 	require.NoError(t, err)

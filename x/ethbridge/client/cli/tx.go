@@ -120,7 +120,7 @@ func GetCmdBurn(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			cosmosSender, err := sdk.AccAddressFromBech32(args[0])
+			evrnetSender, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
@@ -144,7 +144,7 @@ func GetCmdBurn(cdc *codec.Codec) *cobra.Command {
 
 			symbol := args[3]
 
-			msg := types.NewMsgBurn(ethereumChainID, cosmosSender, ethereumReceiver, amount, symbol)
+			msg := types.NewMsgBurn(ethereumChainID, evrnetSender, ethereumReceiver, amount, symbol)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -173,7 +173,7 @@ func GetCmdLock(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			cosmosSender, err := sdk.AccAddressFromBech32(args[0])
+			evrnetSender, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
@@ -197,7 +197,7 @@ func GetCmdLock(cdc *codec.Codec) *cobra.Command {
 
 			symbol := args[3]
 
-			msg := types.NewMsgLock(ethereumChainID, cosmosSender, ethereumReceiver, amount, symbol)
+			msg := types.NewMsgLock(ethereumChainID, evrnetSender, ethereumReceiver, amount, symbol)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

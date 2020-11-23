@@ -82,9 +82,9 @@ func (k Keeper) ProcessSuccessfulClaim(ctx sdk.Context, claim string) error {
 }
 
 // ProcessBurn processes the burn of bridged coins from the given sender
-func (k Keeper) ProcessBurn(ctx sdk.Context, cosmosSender sdk.AccAddress, amount sdk.Coins) error {
+func (k Keeper) ProcessBurn(ctx sdk.Context, evrnetSender sdk.AccAddress, amount sdk.Coins) error {
 	if err := k.supplyKeeper.SendCoinsFromAccountToModule(
-		ctx, cosmosSender, types.ModuleName, amount,
+		ctx, evrnetSender, types.ModuleName, amount,
 	); err != nil {
 		return err
 	}
@@ -97,6 +97,6 @@ func (k Keeper) ProcessBurn(ctx sdk.Context, cosmosSender sdk.AccAddress, amount
 }
 
 // ProcessLock processes the lockup of cosmos coins from the given sender
-func (k Keeper) ProcessLock(ctx sdk.Context, cosmosSender sdk.AccAddress, amount sdk.Coins) error {
-	return k.supplyKeeper.SendCoinsFromAccountToModule(ctx, cosmosSender, types.ModuleName, amount)
+func (k Keeper) ProcessLock(ctx sdk.Context, evrnetSender sdk.AccAddress, amount sdk.Coins) error {
+	return k.supplyKeeper.SendCoinsFromAccountToModule(ctx, evrnetSender, types.ModuleName, amount)
 }

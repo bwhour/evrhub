@@ -14,7 +14,7 @@ import (
 
 // MsgLock defines a message for locking coins and triggering a related event
 type MsgLock struct {
-	CosmosSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
+	EvrnetSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
 	Amount           int64           `json:"amount" yaml:"amount"`
 	Symbol           string          `json:"symbol" yaml:"symbol"`
 	EthereumChainID  int             `json:"ethereum_chain_id" yaml:"ethereum_chain_id"`
@@ -23,11 +23,11 @@ type MsgLock struct {
 
 // NewMsgLock is a constructor function for MsgLock
 func NewMsgLock(
-	ethereumChainID int, cosmosSender sdk.AccAddress,
+	ethereumChainID int, evrnetSender sdk.AccAddress,
 	ethereumReceiver EthereumAddress, amount int64, symbol string) MsgLock {
 	return MsgLock{
 		EthereumChainID:  ethereumChainID,
-		CosmosSender:     cosmosSender,
+		EvrnetSender:     evrnetSender,
 		EthereumReceiver: ethereumReceiver,
 		Amount:           amount,
 		Symbol:           symbol,
@@ -46,8 +46,8 @@ func (msg MsgLock) ValidateBasic() error {
 		return sdkerrors.Wrapf(ErrInvalidEthereumChainID, "%d", msg.EthereumChainID)
 	}
 
-	if msg.CosmosSender.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CosmosSender.String())
+	if msg.EvrnetSender.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetSender.String())
 	}
 
 	if msg.EthereumReceiver.String() == "" {
@@ -81,12 +81,12 @@ func (msg MsgLock) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgLock) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.CosmosSender}
+	return []sdk.AccAddress{msg.EvrnetSender}
 }
 
 // MsgBurn defines a message for burning coins and triggering a related event
 type MsgBurn struct {
-	CosmosSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
+	EvrnetSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
 	Amount           int64           `json:"amount" yaml:"amount"`
 	Symbol           string          `json:"symbol" yaml:"symbol"`
 	EthereumChainID  int             `json:"ethereum_chain_id" yaml:"ethereum_chain_id"`
@@ -95,11 +95,11 @@ type MsgBurn struct {
 
 // NewMsgBurn is a constructor function for MsgBurn
 func NewMsgBurn(
-	ethereumChainID int, cosmosSender sdk.AccAddress,
+	ethereumChainID int, evrnetSender sdk.AccAddress,
 	ethereumReceiver EthereumAddress, amount int64, symbol string) MsgBurn {
 	return MsgBurn{
 		EthereumChainID:  ethereumChainID,
-		CosmosSender:     cosmosSender,
+		EvrnetSender:     evrnetSender,
 		EthereumReceiver: ethereumReceiver,
 		Amount:           amount,
 		Symbol:           symbol,
@@ -117,8 +117,8 @@ func (msg MsgBurn) ValidateBasic() error {
 	if strconv.Itoa(msg.EthereumChainID) == "" {
 		return sdkerrors.Wrapf(ErrInvalidEthereumChainID, "%d", msg.EthereumChainID)
 	}
-	if msg.CosmosSender.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CosmosSender.String())
+	if msg.EvrnetSender.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetSender.String())
 	}
 	if msg.EthereumReceiver.String() == "" {
 		return ErrInvalidEthAddress
@@ -156,7 +156,7 @@ func (msg MsgBurn) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgBurn) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.CosmosSender}
+	return []sdk.AccAddress{msg.EvrnetSender}
 }
 
 // MsgCreateEthBridgeClaim defines a message for creating claims on the ethereum bridge

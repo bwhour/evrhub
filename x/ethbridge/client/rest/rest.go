@@ -44,7 +44,7 @@ type burnOrLockEthReq struct {
 	BaseReq          rest.BaseReq `json:"base_req"`
 	EthereumChainID  string       `json:"ethereum_chain_id"`
 	TokenContract    string       `json:"token_contract_address"`
-	CosmosSender     string       `json:"cosmos_sender"`
+	EvrnetSender     string       `json:"cosmos_sender"`
 	EthereumReceiver string       `json:"ethereum_receiver"`
 	Amount           int64        `json:"amount"`
 	Symbol           string       `json:"symbol"`
@@ -182,7 +182,7 @@ func burnOrLockHandler(cliCtx context.CLIContext, lockOrBurn string) http.Handle
 			return
 		}
 
-		cosmosSender, err := sdk.AccAddressFromBech32(req.CosmosSender)
+		evrnetSender, err := sdk.AccAddressFromBech32(req.EvrnetSender)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -194,9 +194,9 @@ func burnOrLockHandler(cliCtx context.CLIContext, lockOrBurn string) http.Handle
 		var msg sdk.Msg
 		switch lockOrBurn {
 		case "lock":
-			msg = types.NewMsgLock(ethereumChainID, cosmosSender, ethereumReceiver, req.Amount, req.Symbol)
+			msg = types.NewMsgLock(ethereumChainID, evrnetSender, ethereumReceiver, req.Amount, req.Symbol)
 		case "burn":
-			msg = types.NewMsgBurn(ethereumChainID, cosmosSender, ethereumReceiver, req.Amount, req.Symbol)
+			msg = types.NewMsgBurn(ethereumChainID, evrnetSender, ethereumReceiver, req.Amount, req.Symbol)
 		}
 		err = msg.ValidateBasic()
 		if err != nil {
