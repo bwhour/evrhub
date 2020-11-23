@@ -25,13 +25,13 @@ const (
 	Oracle
 	// BridgeBank bridgeBank contract
 	BridgeBank
-	// CosmosBridge cosmosBridge contract
-	CosmosBridge
+	// EvrnetBridge cosmosBridge contract
+	EvrnetBridge
 )
 
 // String returns the event type as a string
 func (d ContractRegistry) String() string {
-	return [...]string{"valset", "oracle", "bridgebank", "cosmosbridge"}[d-1]
+	return [...]string{"valset", "oracle", "bridgebank", "evrnetbridge"}[d-1]
 }
 
 // GetAddressFromBridgeRegistry queries the requested contract address from the BridgeRegistry contract
@@ -69,8 +69,8 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 		address, err = registryInstance.Oracle(&auth)
 	case BridgeBank:
 		address, err = registryInstance.BridgeBank(&auth)
-	case CosmosBridge:
-		address, err = registryInstance.CosmosBridge(&auth)
+	case EvrnetBridge:
+		address, err = registryInstance.EvrnetBridge(&auth)
 	default:
 		panic("invalid target contract address")
 	}

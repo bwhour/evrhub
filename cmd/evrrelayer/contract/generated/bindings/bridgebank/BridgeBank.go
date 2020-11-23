@@ -214,10 +214,10 @@ func (_BridgeBank *BridgeBankCallerSession) BridgeTokenCount() (*big.Int, error)
 	return _BridgeBank.Contract.BridgeTokenCount(&_BridgeBank.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeBank *BridgeBankCaller) CosmosBridge(opts *bind.CallOpts) (common.Address, error) {
+func (_BridgeBank *BridgeBankCaller) EvrnetBridge(opts *bind.CallOpts) (common.Address, error) {
 	var (
 		ret0 = new(common.Address)
 	)
@@ -226,18 +226,18 @@ func (_BridgeBank *BridgeBankCaller) CosmosBridge(opts *bind.CallOpts) (common.A
 	return *ret0, err
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeBank *BridgeBankSession) CosmosBridge() (common.Address, error) {
-	return _BridgeBank.Contract.CosmosBridge(&_BridgeBank.CallOpts)
+func (_BridgeBank *BridgeBankSession) EvrnetBridge() (common.Address, error) {
+	return _BridgeBank.Contract.EvrnetBridge(&_BridgeBank.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeBank *BridgeBankCallerSession) CosmosBridge() (common.Address, error) {
-	return _BridgeBank.Contract.CosmosBridge(&_BridgeBank.CallOpts)
+func (_BridgeBank *BridgeBankCallerSession) EvrnetBridge() (common.Address, error) {
+	return _BridgeBank.Contract.EvrnetBridge(&_BridgeBank.CallOpts)
 }
 
 // GetBridgeToken is a free data retrieval call binding the contract method 0xebb73ca9.

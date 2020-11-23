@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	cosmosbridge "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/cosmosbridge"
+	evrnetbridge "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/evrnetbridge"
 	oracle "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/oracle"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/types"
 )
@@ -21,21 +21,21 @@ const (
 	GasLimit = uint64(3000000)
 )
 
-// RelayProphecyClaimToEthereum relays the provided ProphecyClaim to CosmosBridge contract on the Ethereum network
+// RelayProphecyClaimToEthereum relays the provided ProphecyClaim to EvrnetBridge contract on the Ethereum network
 func RelayProphecyClaimToEthereum(provider string, contractAddress common.Address, event types.Event,
 	claim ProphecyClaim, key *ecdsa.PrivateKey) error {
 	// Initialize client service, validator's tx auth, and target contract address
 	client, auth, target := initRelayConfig(provider, contractAddress, event, key)
 
-	// Initialize CosmosBridge instance
-	fmt.Println("\nFetching CosmosBridge contract...")
+	// Initialize EvrnetBridge instance
+	fmt.Println("\nFetching EvrnetBridge contract...")
 	cosmosBridgeInstance, err := cosmosbridge.NewCosmosBridge(target, client)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Send transaction
-	fmt.Println("Sending new ProphecyClaim to CosmosBridge...")
+	fmt.Println("Sending new ProphecyClaim to EvrnetBridge...")
 	tx, err := cosmosBridgeInstance.NewProphecyClaim(auth, uint8(claim.ClaimType),
 	claim.CosmosSender, claim.EthereumReceiver, claim.Symbol, claim.Amount)
 	if err != nil {
@@ -129,9 +129,9 @@ func initRelayConfig(provider string, registry common.Address, event types.Event
 
 	var targetContract ContractRegistry
 	switch event {
-	// ProphecyClaims are sent to the CosmosBridge contract
+	// ProphecyClaims are sent to the EvrnetBridge contract
 	case types.MsgBurn, types.MsgLock:
-		targetContract = CosmosBridge
+		targetContract = EvrnetBridge
 	// OracleClaims are sent to the Oracle contract
 	case types.LogNewProphecyClaim:
 		targetContract = Oracle

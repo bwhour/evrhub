@@ -18,7 +18,7 @@ import (
 // File paths to Peggy smart contract ABIs
 const (
 	BridgeBankABI   = "/generated/abi/BridgeBank/BridgeBank.abi"
-	CosmosBridgeABI = "/generated/abi/CosmosBridge/CosmosBridge.abi"
+	CosmosBridgeABI = "/generated/abi/EvrnetBridge/EvrnetBridge.abi"
 )
 
 // LoadABI loads a smart contract as an abi.ABI
@@ -30,7 +30,7 @@ func LoadABI(contractType txs.ContractRegistry) abi.ABI {
 
 	var filePath string
 	switch contractType {
-	case txs.CosmosBridge:
+	case txs.EvrnetBridge:
 		filePath = CosmosBridgeABI
 	case txs.BridgeBank:
 		filePath = BridgeBankABI

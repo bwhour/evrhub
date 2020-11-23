@@ -214,10 +214,10 @@ func (_BridgeRegistry *BridgeRegistryCallerSession) BridgeBank() (common.Address
 	return _BridgeRegistry.Contract.BridgeBank(&_BridgeRegistry.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeRegistry *BridgeRegistryCaller) CosmosBridge(opts *bind.CallOpts) (common.Address, error) {
+func (_BridgeRegistry *BridgeRegistryCaller) EvrnetBridge(opts *bind.CallOpts) (common.Address, error) {
 	var (
 		ret0 = new(common.Address)
 	)
@@ -226,18 +226,18 @@ func (_BridgeRegistry *BridgeRegistryCaller) CosmosBridge(opts *bind.CallOpts) (
 	return *ret0, err
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeRegistry *BridgeRegistrySession) CosmosBridge() (common.Address, error) {
-	return _BridgeRegistry.Contract.CosmosBridge(&_BridgeRegistry.CallOpts)
+func (_BridgeRegistry *BridgeRegistrySession) EvrnetBridge() (common.Address, error) {
+	return _BridgeRegistry.Contract.EvrnetBridge(&_BridgeRegistry.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_BridgeRegistry *BridgeRegistryCallerSession) CosmosBridge() (common.Address, error) {
-	return _BridgeRegistry.Contract.CosmosBridge(&_BridgeRegistry.CallOpts)
+func (_BridgeRegistry *BridgeRegistryCallerSession) EvrnetBridge() (common.Address, error) {
+	return _BridgeRegistry.Contract.EvrnetBridge(&_BridgeRegistry.CallOpts)
 }
 
 // Oracle is a free data retrieval call binding the contract method 0x7dc0d1d0.
@@ -361,7 +361,7 @@ func (it *BridgeRegistryLogContractsRegisteredIterator) Close() error {
 
 // BridgeRegistryLogContractsRegistered represents a LogContractsRegistered event raised by the BridgeRegistry contract.
 type BridgeRegistryLogContractsRegistered struct {
-	CosmosBridge common.Address
+	EvrnetBridge common.Address
 	BridgeBank   common.Address
 	Oracle       common.Address
 	Valset       common.Address

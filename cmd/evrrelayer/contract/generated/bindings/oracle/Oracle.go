@@ -246,10 +246,10 @@ func (_Oracle *OracleCallerSession) ConsensusThreshold() (*big.Int, error) {
 	return _Oracle.Contract.ConsensusThreshold(&_Oracle.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_Oracle *OracleCaller) CosmosBridge(opts *bind.CallOpts) (common.Address, error) {
+func (_Oracle *OracleCaller) EvrnetBridge(opts *bind.CallOpts) (common.Address, error) {
 	var (
 		ret0 = new(common.Address)
 	)
@@ -258,18 +258,18 @@ func (_Oracle *OracleCaller) CosmosBridge(opts *bind.CallOpts) (common.Address, 
 	return *ret0, err
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_Oracle *OracleSession) CosmosBridge() (common.Address, error) {
-	return _Oracle.Contract.CosmosBridge(&_Oracle.CallOpts)
+func (_Oracle *OracleSession) EvrnetBridge() (common.Address, error) {
+	return _Oracle.Contract.EvrnetBridge(&_Oracle.CallOpts)
 }
 
-// CosmosBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
+// EvrnetBridge is a free data retrieval call binding the contract method 0xb0e9ef71.
 //
 // Solidity: function cosmosBridge() constant returns(address)
-func (_Oracle *OracleCallerSession) CosmosBridge() (common.Address, error) {
-	return _Oracle.Contract.CosmosBridge(&_Oracle.CallOpts)
+func (_Oracle *OracleCallerSession) EvrnetBridge() (common.Address, error) {
+	return _Oracle.Contract.EvrnetBridge(&_Oracle.CallOpts)
 }
 
 // HasMadeClaim is a free data retrieval call binding the contract method 0xa219763e.
