@@ -5,7 +5,7 @@ go 1.13
 require (
 	//github.com/Evrynetlabs/evrsdk v0.39.1 // indirect
 	github.com/Evrynetlabs/evrsdk v0.39.1
-	github.com/aristanetworks/goarista v0.0.0-20190528200627-2e9fd846018e // indirect
+	github.com/Evrynetlabs/evrynet-node v0.0.0-20200817055822-91d38f8c91f2
 	github.com/cespare/cp v1.1.1 // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/ethereum/go-ethereum v1.9.10
