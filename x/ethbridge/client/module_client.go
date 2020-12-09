@@ -1,11 +1,8 @@
 package client
 
 import (
-	"github.com/Evrynetlabs/evrsdk/client/context"
-	"github.com/Evrynetlabs/evrsdk/codec"
 	"github.com/Evrynetlabs/evrhub/x/ethbridge/client/cli"
-	"github.com/Evrynetlabs/evrhub/x/ethbridge/client/rest"
-	"github.com/gorilla/mux"
+	"github.com/Evrynetlabs/evrsdk/codec"
 	"github.com/spf13/cobra"
 
 	"github.com/Evrynetlabs/evrsdk/client/flags"
@@ -42,7 +39,3 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	return ethBridgeTxCmd
 }
 
-// RegisterRESTRoutes - Central function to define routes that get registered by the main application
-func RegisterRESTRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
-	rest.RegisterRESTRoutes(cliCtx, r, storeName)
-}

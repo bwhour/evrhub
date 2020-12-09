@@ -38,7 +38,6 @@ var (
 	// and genesis verification.
 	ModuleBasics = module.NewBasicManager(
 		auth.AppModuleBasic{},
-		genutil.AppModuleBasic{},
 		bank.AppModuleBasic{},
 		staking.AppModuleBasic{},
 		params.AppModuleBasic{},
@@ -60,13 +59,12 @@ var (
 func MakeCodec() *codec.Codec {
 	var cdc = codec.New()
 	ModuleBasics.RegisterCodec(cdc)
-	vesting.RegisterCodec(cdc)
 	sdk.RegisterCodec(cdc)
 	codec.RegisterCrypto(cdc)
 	return cdc
 }
 
-// EthereumBridgeApp defines the Ethereum-Cosmos peg-zone application
+// EthereumBridgeApp defines the Ethereum-Evrnet peg-zone application
 type EthereumBridgeApp struct {
 	*bam.BaseApp
 	cdc *codec.Codec
@@ -101,7 +99,6 @@ func NewEthereumBridgeApp(
 
 	// BaseApp handles interactions with Tendermint through the ABCI protocol
 	bApp := bam.NewBaseApp(appName, logger, db, auth.DefaultTxDecoder(cdc))
-	bApp.SetAppVersion(version.Version)
 
 	keys := sdk.NewKVStoreKeys(
 		bam.MainStoreKey, auth.StoreKey, staking.StoreKey,
@@ -138,7 +135,6 @@ func NewEthereumBridgeApp(
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
 	app.mm = module.NewManager(
-		genutil.NewAppModule(app.AccountKeeper, app.StakingKeeper, app.BaseApp.DeliverTx),
 		auth.NewAppModule(app.AccountKeeper),
 		bank.NewAppModule(app.BankKeeper, app.AccountKeeper),
 		supply.NewAppModule(app.SupplyKeeper, app.AccountKeeper),
@@ -153,7 +149,7 @@ func NewEthereumBridgeApp(
 	// properly initialized with tokens from genesis accounts.
 	app.mm.SetOrderInitGenesis(
 		auth.ModuleName, staking.ModuleName, bank.ModuleName,
-		supply.ModuleName, genutil.ModuleName, ethbridge.ModuleName,
+		supply.ModuleName, ethbridge.ModuleName,
 	)
 
 	// TODO: add simulator support
@@ -167,7 +163,6 @@ func NewEthereumBridgeApp(
 	// initialize BaseApp
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
-	app.SetAnteHandler(ante.NewAnteHandler(app.AccountKeeper, app.SupplyKeeper, auth.DefaultSigVerificationGasConsumer))
 	app.SetEndBlocker(app.EndBlocker)
 
 	if loadLatest {

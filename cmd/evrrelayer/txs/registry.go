@@ -8,24 +8,24 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/bridgeregistry"
+	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/ethContract/generated/bindings/bridgeregistry"
 )
 
-// TODO: Update BridgeRegistry contract so that all bridge contract addresses can be queried
+// TODO: Update BridgeRegistry ethContract so that all bridge ethContract addresses can be queried
 //		in one transaction. Then refactor ContractRegistry to a map and store it under new
 //		Relayer struct.
 
-// ContractRegistry is an enum for the bridge contract types
+// ContractRegistry is an enum for the bridge ethContract types
 type ContractRegistry byte
 
 const (
-	// Valset valset contract
+	// Valset valset ethContract
 	Valset ContractRegistry = iota + 1
-	// Oracle oracle contract
+	// Oracle ethContract
 	Oracle
-	// BridgeBank bridgeBank contract
+	// BridgeBank bridgeBank ethContract
 	BridgeBank
-	// EvrnetBridge cosmosBridge contract
+	// EvrnetBridge cosmosBridge ethContract
 	EvrnetBridge
 )
 
@@ -34,7 +34,7 @@ func (d ContractRegistry) String() string {
 	return [...]string{"valset", "oracle", "bridgebank", "evrnetbridge"}[d-1]
 }
 
-// GetAddressFromBridgeRegistry queries the requested contract address from the BridgeRegistry contract
+// GetAddressFromBridgeRegistry queries the requested ethContract address from the BridgeRegistry ethContract
 func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Address, target ContractRegistry,
 ) (common.Address, error) {
 	sender, err := LoadSender()
@@ -72,7 +72,7 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 	case EvrnetBridge:
 		address, err = registryInstance.EvrnetBridge(&auth)
 	default:
-		panic("invalid target contract address")
+		panic("invalid target ethContract address")
 	}
 
 	if err != nil {

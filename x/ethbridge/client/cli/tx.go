@@ -23,7 +23,7 @@ import (
 //nolint:lll
 func GetCmdCreateEthBridgeClaim(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-claim [bridge-registry-contract] [nonce] [symbol] [ethereum-sender-address] [cosmos-receiver-address] [validator-address] [amount] [claim-type] --ethereum-chain-id [ethereum-chain-id] --token-contract-address [token-contract-address]",
+		Use:   "create-claim [bridge-registry-ethContract] [nonce] [symbol] [ethereum-sender-address] [cosmos-receiver-address] [validator-address] [amount] [claim-type] --ethereum-chain-id [ethereum-chain-id] --token-ethContract-address [token-ethContract-address]",
 		Short: "create a claim on an ethereum prophecy",
 		Args:  cobra.ExactArgs(8),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -40,12 +40,12 @@ func GetCmdCreateEthBridgeClaim(cdc *codec.Codec) *cobra.Command {
 
 			tokenContractString := viper.GetString(types.FlagTokenContractAddr)
 			if !common.IsHexAddress(tokenContractString) {
-				return errors.Errorf("invalid [token-contract-address]: %s", tokenContractString)
+				return errors.Errorf("invalid [token-ethContract-address]: %s", tokenContractString)
 			}
 			tokenContract := types.NewEthereumAddress(tokenContractString)
 
 			if !common.IsHexAddress(args[0]) {
-				return errors.Errorf("invalid [bridge-registry-contract]: %s", args[0])
+				return errors.Errorf("invalid [bridge-registry-ethContract]: %s", args[0])
 			}
 			bridgeContract := types.NewEthereumAddress(args[0])
 
@@ -59,7 +59,7 @@ func GetCmdCreateEthBridgeClaim(cdc *codec.Codec) *cobra.Command {
 			if !common.IsHexAddress(args[3]) {
 				return errors.Errorf("invalid [ethereum-sender-address]: %s", args[0])
 			}
-			cosmosReceiver, err := sdk.AccAddressFromBech32(args[4])
+			evrnetReceiver, err := sdk.AccAddressFromBech32(args[4])
 			if err != nil {
 				return err
 			}
@@ -87,7 +87,7 @@ func GetCmdCreateEthBridgeClaim(cdc *codec.Codec) *cobra.Command {
 			}
 
 			ethBridgeClaim := types.NewEthBridgeClaim(ethereumChainID, bridgeContract, nonce, symbol, tokenContract,
-				ethereumSender, cosmosReceiver, validator, amount, claimType)
+				ethereumSender, evrnetReceiver, validator, amount, claimType)
 
 			msg := types.NewMsgCreateEthBridgeClaim(ethBridgeClaim)
 			if err := msg.ValidateBasic(); err != nil {
@@ -104,9 +104,9 @@ func GetCmdCreateEthBridgeClaim(cdc *codec.Codec) *cobra.Command {
 func GetCmdBurn(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "burn [cosmos-sender-address] [ethereum-receiver-address] [amount] [symbol] --ethereum-chain-id [ethereum-chain-id]",
-		Short: "burn cETH or cERC20 on the Cosmos chain",
-		Long: `This should be used to burn cETH or cERC20. It will burn your coins on the Cosmos Chain, removing them from your account and deducting them from the supply.
-		It will also trigger an event on the Cosmos Chain for relayers to watch so that they can trigger the withdrawal of the original ETH/ERC20 to you from the Ethereum contract!`,
+		Short: "burn cETH or cERC20 on the Evrnet chain",
+		Long: `This should be used to burn cETH or cERC20. It will burn your coins on the Evrnet Chain, removing them from your account and deducting them from the supply.
+		It will also trigger an event on the Evrnet Chain for relayers to watch so that they can trigger the withdrawal of the original ETH/ERC20 to you from the Ethereum ethContract!`,
 		Args: cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 
@@ -159,7 +159,7 @@ func GetCmdLock(cdc *codec.Codec) *cobra.Command {
 	//nolint:lll
 	return &cobra.Command{
 		Use:   "lock [cosmos-sender-address] [ethereum-receiver-address] [amount] [symbol] --ethereum-chain-id [ethereum-chain-id]",
-		Short: "This should be used to lock Cosmos-originating coins (eg: ATOM). It will lock up your coins in the supply module, removing them from your account. It will also trigger an event on the Cosmos Chain for relayers to watch so that they can trigger the minting of the pegged token on Etherum to you!",
+		Short: "This should be used to lock Evrnet-originating coins (eg: ATOM). It will lock up your coins in the supply module, removing them from your account. It will also trigger an event on the Evrnet Chain for relayers to watch so that they can trigger the minting of the pegged token on Etherum to you!",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 

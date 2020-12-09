@@ -52,7 +52,7 @@ func TestSignClaim(t *testing.T) {
 	// Generate claim message from ProphecyClaim
 	message := GenerateClaimMessage(prophecyClaimEvent)
 
-	// Prepare the message (required for signature verification on contract)
+	// Prepare the message (required for signature verification on ethContract)
 	prefixedHashedMsg := PrefixMsg(message)
 
 	// Sign the message using the validator's private key

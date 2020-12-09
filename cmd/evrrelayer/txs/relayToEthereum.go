@@ -11,8 +11,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	evrnetbridge "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/evrnetbridge"
-	oracle "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/oracle"
+	evrnetbridge "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/ethContract/generated/bindings/evrnetbridge"
+	oracle "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/ethContract/generated/bindings/oracle"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/types"
 )
 
@@ -21,22 +21,22 @@ const (
 	GasLimit = uint64(3000000)
 )
 
-// RelayProphecyClaimToEthereum relays the provided ProphecyClaim to EvrnetBridge contract on the Ethereum network
+// RelayProphecyClaimToEthereum relays the provided ProphecyClaim to EvrnetBridge ethContract on the Ethereum network
 func RelayProphecyClaimToEthereum(provider string, contractAddress common.Address, event types.Event,
 	claim ProphecyClaim, key *ecdsa.PrivateKey) error {
-	// Initialize client service, validator's tx auth, and target contract address
+	// Initialize client service, validator's tx auth, and target ethContract address
 	client, auth, target := initRelayConfig(provider, contractAddress, event, key)
 
 	// Initialize EvrnetBridge instance
-	fmt.Println("\nFetching EvrnetBridge contract...")
-	cosmosBridgeInstance, err := cosmosbridge.NewCosmosBridge(target, client)
+	fmt.Println("\nFetching EvrnetBridge ethContract...")
+	evrnetBridgeInstance, err := evrnetbridge.NewCosmosBridge(target, client)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Send transaction
 	fmt.Println("Sending new ProphecyClaim to EvrnetBridge...")
-	tx, err := cosmosBridgeInstance.NewProphecyClaim(auth, uint8(claim.ClaimType),
+	tx, err := evrnetBridgeInstance.NewProphecyClaim(auth, uint8(claim.ClaimType),
 	claim.EvrnetSender, claim.EthereumReceiver, claim.Symbol, claim.Amount)
 	if err != nil {
 		log.Fatal(err)
@@ -58,14 +58,14 @@ func RelayProphecyClaimToEthereum(provider string, contractAddress common.Addres
 	return nil
 }
 
-// RelayOracleClaimToEthereum relays the provided OracleClaim to Oracle contract on the Ethereum network
+// RelayOracleClaimToEthereum relays the provided OracleClaim to Oracle ethContract on the Ethereum network
 func RelayOracleClaimToEthereum(provider string, contractAddress common.Address, event types.Event,
 	claim OracleClaim, key *ecdsa.PrivateKey) error {
-	// Initialize client service, validator's tx auth, and target contract address
+	// Initialize client service, validator's tx auth, and target ethContract address
 	client, auth, target := initRelayConfig(provider, contractAddress, event, key)
 
 	// Initialize Oracle instance
-	fmt.Println("\nFetching Oracle contract...")
+	fmt.Println("\nFetching Oracle ethContract...")
 	oracleInstance, err := oracle.NewOracle(target, client)
 	if err != nil {
 		log.Fatal(err)
@@ -95,7 +95,7 @@ func RelayOracleClaimToEthereum(provider string, contractAddress common.Address,
 	return nil
 }
 
-// initRelayConfig set up Ethereum client, validator's transaction auth, and the target contract's address
+// initRelayConfig set up Ethereum client, validator's transaction auth, and the target ethContract's address
 func initRelayConfig(provider string, registry common.Address, event types.Event, key *ecdsa.PrivateKey,
 ) (*ethclient.Client, *bind.TransactOpts, common.Address) {
 	// Start Ethereum client
@@ -129,17 +129,17 @@ func initRelayConfig(provider string, registry common.Address, event types.Event
 
 	var targetContract ContractRegistry
 	switch event {
-	// ProphecyClaims are sent to the EvrnetBridge contract
+	// ProphecyClaims are sent to the EvrnetBridge ethContract
 	case types.MsgBurn, types.MsgLock:
 		targetContract = EvrnetBridge
-	// OracleClaims are sent to the Oracle contract
+	// OracleClaims are sent to the Oracle ethContract
 	case types.LogNewProphecyClaim:
 		targetContract = Oracle
 	default:
-		panic("invalid target contract address")
+		panic("invalid target ethContract address")
 	}
 
-	// Get the specific contract's address
+	// Get the specific ethContract's address
 	target, err := GetAddressFromBridgeRegistry(client, registry, targetContract)
 	if err != nil {
 		log.Fatal(err)

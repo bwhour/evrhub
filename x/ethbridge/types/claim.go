@@ -19,8 +19,8 @@ type EthBridgeClaim struct {
 	Symbol                string          `json:"symbol" yaml:"symbol"`
 	TokenContractAddress  EthereumAddress `json:"token_contract_address" yaml:"token_contract_address"`
 	EthereumSender        EthereumAddress `json:"ethereum_sender" yaml:"ethereum_sender"`
-	CosmosReceiver        sdk.AccAddress  `json:"cosmos_receiver" yaml:"cosmos_receiver"`
-	ValidatorAddress      sdk.ValAddress  `json:"validator_address" yaml:"validator_address"`
+	EvrnetReceiver        EvrnetAddress   `json:"evrnet_Receiver" yaml:"evrnet_Receiver"`
+	ValidatorAddress      EvrnetAddress   `json:"validator_address" yaml:"validator_address"`
 	Amount                int64           `json:"amount" yaml:"amount"`
 	ClaimType             ClaimType       `json:"claim_type" yaml:"claim_type"`
 }
@@ -28,7 +28,7 @@ type EthBridgeClaim struct {
 // NewEthBridgeClaim is a constructor function for NewEthBridgeClaim
 func NewEthBridgeClaim(ethereumChainID int, bridgeContract EthereumAddress,
 	nonce int, symbol string, tokenContact EthereumAddress, ethereumSender EthereumAddress,
-	cosmosReceiver sdk.AccAddress, validator sdk.ValAddress, amount int64, claimType ClaimType,
+	evrnetReceiver EvrnetAddress, validator EvrnetAddress, amount int64, claimType ClaimType,
 ) EthBridgeClaim {
 	return EthBridgeClaim{
 		EthereumChainID:       ethereumChainID,
@@ -37,7 +37,7 @@ func NewEthBridgeClaim(ethereumChainID int, bridgeContract EthereumAddress,
 		Symbol:                symbol,
 		TokenContractAddress:  tokenContact,
 		EthereumSender:        ethereumSender,
-		CosmosReceiver:        cosmosReceiver,
+		EvrnetReceiver:        evrnetReceiver,
 		ValidatorAddress:      validator,
 		Amount:                amount,
 		ClaimType:             claimType,
@@ -46,7 +46,7 @@ func NewEthBridgeClaim(ethereumChainID int, bridgeContract EthereumAddress,
 
 // OracleClaimContent is the details of how the content of the claim for each validator will be stored in the oracle
 type OracleClaimContent struct {
-	CosmosReceiver       sdk.AccAddress  `json:"cosmos_receiver" yaml:"cosmos_receiver"`
+	EvrnetReceiver       EvrnetAddress  `json:"evrnet_Receiver" yaml:"evrnet_Receiver"`
 	Amount               int64           `json:"amount" yaml:"amount"`
 	Symbol               string          `json:"symbol" yaml:"symbol"`
 	TokenContractAddress EthereumAddress `json:"token_contract_address" yaml:"token_contract_address"`
@@ -55,10 +55,10 @@ type OracleClaimContent struct {
 
 // NewOracleClaimContent is a constructor function for OracleClaim
 func NewOracleClaimContent(
-	cosmosReceiver sdk.AccAddress, amount int64, symbol string, tokenContractAddress EthereumAddress, claimType ClaimType,
+	evrnetReceiver EvrnetAddress, amount int64, symbol string, tokenContractAddress EthereumAddress, claimType ClaimType,
 ) OracleClaimContent {
 	return OracleClaimContent{
-		CosmosReceiver:       cosmosReceiver,
+		EvrnetReceiver:       evrnetReceiver,
 		Amount:               amount,
 		Symbol:               symbol,
 		TokenContractAddress: tokenContractAddress,
@@ -70,10 +70,10 @@ func NewOracleClaimContent(
 // the oracle module. The oracle module expects every claim for a particular prophecy to have the same id, so this id
 // must be created in a deterministic way that all validators can follow.
 // For this, we use the Nonce an Ethereum Sender provided,
-// as all validators will see this same data from the smart contract.
+// as all validators will see this same data from the smart ethContract.
 func CreateOracleClaimFromEthClaim(cdc *codec.Codec, ethClaim EthBridgeClaim) (oracle.Claim, error) {
 	oracleID := strconv.Itoa(ethClaim.EthereumChainID) + strconv.Itoa(ethClaim.Nonce) + ethClaim.EthereumSender.String()
-	claimContent := NewOracleClaimContent(ethClaim.CosmosReceiver, ethClaim.Amount,
+	claimContent := NewOracleClaimContent(ethClaim.EvrnetReceiver, ethClaim.Amount,
 		ethClaim.Symbol, ethClaim.TokenContractAddress, ethClaim.ClaimType)
 	claimBytes, err := json.Marshal(claimContent)
 	if err != nil {
@@ -102,7 +102,7 @@ func CreateEthClaimFromOracleString(
 		oracleClaim.Symbol,
 		oracleClaim.TokenContractAddress,
 		ethereumAddress,
-		oracleClaim.CosmosReceiver,
+		oracleClaim.EvrnetReceiver,
 		validator,
 		oracleClaim.Amount,
 		oracleClaim.ClaimType,

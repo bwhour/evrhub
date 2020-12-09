@@ -8,7 +8,7 @@ var (
 	EventTypeLock           = "lock"
 
 	AttributeKeyEthereumSender = "ethereum_sender"
-	AttributeKeyCosmosReceiver = "cosmos_receiver"
+	AttributeKeyEvrnetReceiver = "evrnet_Receiver"
 	AttributeKeyAmount         = "amount"
 	AttributeKeySymbol         = "symbol"
 	AttributeKeyCoins          = "coins"
@@ -17,7 +17,7 @@ var (
 
 	AttributeKeyEthereumChainID  = "ethereum_chain_id"
 	AttributeKeyTokenContract    = "token_contract_address"
-	AttributeKeyCosmosSender     = "cosmos_sender"
+	AttributeKeyCosmosSender     = "evrnet_sender"
 	AttributeKeyEthereumReceiver = "ethereum_receiver"
 
 	AttributeValueCategory = ModuleName

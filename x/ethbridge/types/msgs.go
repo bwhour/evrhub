@@ -14,7 +14,7 @@ import (
 
 // MsgLock defines a message for locking coins and triggering a related event
 type MsgLock struct {
-	EvrnetSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
+	EvrnetSender     EvrnetAddress  `json:"evrnet_sender" yaml:"evrnet_sender"`
 	Amount           int64           `json:"amount" yaml:"amount"`
 	Symbol           string          `json:"symbol" yaml:"symbol"`
 	EthereumChainID  int             `json:"ethereum_chain_id" yaml:"ethereum_chain_id"`
@@ -23,7 +23,7 @@ type MsgLock struct {
 
 // NewMsgLock is a constructor function for MsgLock
 func NewMsgLock(
-	ethereumChainID int, evrnetSender sdk.AccAddress,
+	ethereumChainID int, evrnetSender EvrnetAddress,
 	ethereumReceiver EthereumAddress, amount int64, symbol string) MsgLock {
 	return MsgLock{
 		EthereumChainID:  ethereumChainID,
@@ -34,40 +34,6 @@ func NewMsgLock(
 	}
 }
 
-// Route should return the name of the module
-func (msg MsgLock) Route() string { return RouterKey }
-
-// Type should return the action
-func (msg MsgLock) Type() string { return "lock" }
-
-// ValidateBasic runs stateless checks on the message
-func (msg MsgLock) ValidateBasic() error {
-	if strconv.Itoa(msg.EthereumChainID) == "" {
-		return sdkerrors.Wrapf(ErrInvalidEthereumChainID, "%d", msg.EthereumChainID)
-	}
-
-	if msg.EvrnetSender.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetSender.String())
-	}
-
-	if msg.EthereumReceiver.String() == "" {
-		return ErrInvalidEthAddress
-	}
-
-	if !gethCommon.IsHexAddress(msg.EthereumReceiver.String()) {
-		return ErrInvalidEthAddress
-	}
-
-	if msg.Amount <= 0 {
-		return ErrInvalidAmount
-	}
-
-	if len(msg.Symbol) == 0 {
-		return ErrInvalidSymbol
-	}
-
-	return nil
-}
 
 // GetSignBytes encodes the message for signing
 func (msg MsgLock) GetSignBytes() []byte {
@@ -80,13 +46,13 @@ func (msg MsgLock) GetSignBytes() []byte {
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgLock) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.EvrnetSender}
+func (msg MsgLock) GetSigners() EvrnetAddress {
+	return msg.EvrnetSender
 }
 
 // MsgBurn defines a message for burning coins and triggering a related event
 type MsgBurn struct {
-	EvrnetSender     sdk.AccAddress  `json:"cosmos_sender" yaml:"cosmos_sender"`
+	EvrnetSender     EvrnetAddress   `json:"evrnet_sender" yaml:"evrnet_sender"`
 	Amount           int64           `json:"amount" yaml:"amount"`
 	Symbol           string          `json:"symbol" yaml:"symbol"`
 	EthereumChainID  int             `json:"ethereum_chain_id" yaml:"ethereum_chain_id"`
@@ -95,7 +61,7 @@ type MsgBurn struct {
 
 // NewMsgBurn is a constructor function for MsgBurn
 func NewMsgBurn(
-	ethereumChainID int, evrnetSender sdk.AccAddress,
+	ethereumChainID int, evrnetSender EvrnetAddress,
 	ethereumReceiver EthereumAddress, amount int64, symbol string) MsgBurn {
 	return MsgBurn{
 		EthereumChainID:  ethereumChainID,
@@ -155,8 +121,8 @@ func (msg MsgBurn) GetSignBytes() []byte {
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgBurn) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.EvrnetSender}
+func (msg MsgBurn) GetSigners() EvrnetAddress {
+	return msg.EvrnetSender
 }
 
 // MsgCreateEthBridgeClaim defines a message for creating claims on the ethereum bridge
@@ -167,16 +133,10 @@ func NewMsgCreateEthBridgeClaim(ethBridgeClaim EthBridgeClaim) MsgCreateEthBridg
 	return MsgCreateEthBridgeClaim(ethBridgeClaim)
 }
 
-// Route should return the name of the module
-func (msg MsgCreateEthBridgeClaim) Route() string { return RouterKey }
-
-// Type should return the action
-func (msg MsgCreateEthBridgeClaim) Type() string { return "create_bridge_claim" }
-
 // ValidateBasic runs stateless checks on the message
 func (msg MsgCreateEthBridgeClaim) ValidateBasic() error {
-	if msg.CosmosReceiver.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CosmosReceiver.String())
+	if msg.EvrnetReceiver.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.EvrnetReceiver.String())
 	}
 
 	if msg.ValidatorAddress.Empty() {
@@ -213,8 +173,8 @@ func (msg MsgCreateEthBridgeClaim) GetSignBytes() []byte {
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgCreateEthBridgeClaim) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{sdk.AccAddress(msg.ValidatorAddress)}
+func (msg MsgCreateEthBridgeClaim) GetSigners() EvrnetAddress {
+	return msg.ValidatorAddress}
 }
 
 // MapOracleClaimsToEthBridgeClaims maps a set of generic oracle claim data into EthBridgeClaim objects

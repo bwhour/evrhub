@@ -11,7 +11,6 @@ import (
 
 	"github.com/Evrynetlabs/evrhub/flags"
 	"github.com/Evrynetlabs/evrsdk/client/rpc"
-	"github.com/Evrynetlabs/evrsdk/codec"
 	sdk "github.com/Evrynetlabs/evrsdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
@@ -20,13 +19,10 @@ import (
 	"github.com/tendermint/tendermint/libs/cli"
 	tmLog "github.com/tendermint/tendermint/libs/log"
 
-	"github.com/Evrynetlabs/evrhub/app"
-	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract"
+	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/ethContract"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/relayer"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/txs"
 )
-
-var cdc *codec.Codec
 
 const (
 	// FlagRPCURL defines the URL for the tendermint RPC connection
@@ -43,8 +39,6 @@ func init() {
 	config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
 	config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
 	config.Seal()
-
-	cdc = app.MakeCodec()
 
 	// Add --chain-id to persistent flags and mark it required
 	rootCmd.PersistentFlags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend,
@@ -72,7 +66,7 @@ func init() {
 
 var rootCmd = &cobra.Command{
 	Use:          "evrrelayer",
-	Short:        "Streams live events from Ethereum and Cosmos and relays event information to the opposite chain",
+	Short:        "Streams live events from Ethereum and Evrnet and relays event information to the opposite chain",
 	SilenceUsage: true,
 }
 
@@ -80,7 +74,7 @@ var rootCmd = &cobra.Command{
 func initRelayerCmd() *cobra.Command {
 	//nolint:lll
 	initRelayerCmd := &cobra.Command{
-		Use:     "init [tendermintNode] [web3Provider] [bridgeRegistryContractAddress] [validatorMoniker]",
+		Use:     "init [evrnetNode] [web3Provider] [bridgeRegistryContractAddress] [validatorMoniker]",
 		Short:   "Validate credentials and initialize subscriptions to both chains",
 		Args:    cobra.ExactArgs(4),
 		Example: "evrrelayer init tcp://localhost:26657 ws://localhost:7545/ 0x30753E4A8aad7F8597332E813735Def5dD395028 validator --chain-id=peggy",
@@ -90,7 +84,7 @@ func initRelayerCmd() *cobra.Command {
 	return initRelayerCmd
 }
 
-//	generateBindingsCmd : Generates ABIs and bindings for Bridge smart contracts which facilitate contract interaction
+//	generateBindingsCmd : Generates ABIs and bindings for Bridge smart contracts which facilitate ethContract interaction
 func generateBindingsCmd() *cobra.Command {
 	generateBindingsCmd := &cobra.Command{
 		Use:     "generate",
@@ -130,7 +124,7 @@ func RunInitRelayerCmd(cmd *cobra.Command, args []string) error {
 	if len(strings.Trim(args[0], "")) == 0 {
 		return errors.Errorf("invalid [tendermint-node]: %s", args[0])
 	}
-	tendermintNode := args[0]
+	evrnetNode := args[0]
 
 	if !relayer.IsWebsocketURL(args[1]) {
 		return errors.Errorf("invalid [web3-provider]: %s", args[1])
@@ -138,7 +132,7 @@ func RunInitRelayerCmd(cmd *cobra.Command, args []string) error {
 	web3Provider := args[1]
 
 	if !common.IsHexAddress(args[2]) {
-		return errors.Errorf("invalid [bridge-registry-contract-address]: %s", args[2])
+		return errors.Errorf("invalid [bridge-registry-ethContract-address]: %s", args[2])
 	}
 	contractAddress := common.HexToAddress(args[2])
 
@@ -152,13 +146,13 @@ func RunInitRelayerCmd(cmd *cobra.Command, args []string) error {
 
 	// Initialize new Ethereum event listener
 	inBuf := bufio.NewReader(cmd.InOrStdin())
-	ethSub, err := relayer.NewEthereumSub(inBuf, rpcURL, cdc, validatorMoniker, chainID, web3Provider,
+	ethSub, err := relayer.NewEthereumSub(inBuf, rpcURL, validatorMoniker, chainID, web3Provider,
 		contractAddress, privateKey, logger)
 	if err != nil {
 		return err
 	}
-	// Initialize new Cosmos event listener
-	evrnetSub := relayer.NewEvrnetSub(tendermintNode, web3Provider, contractAddress, privateKey, logger)
+	// Initialize new Evrnet event listener
+	evrnetSub := relayer.NewEvrnetSub(evrnetNode, web3Provider, contractAddress, privateKey, logger)
 
 	go ethSub.Start()
 	go evrnetSub.Start()
@@ -173,16 +167,16 @@ func RunInitRelayerCmd(cmd *cobra.Command, args []string) error {
 
 // RunGenerateBindingsCmd : executes the generateBindingsCmd
 func RunGenerateBindingsCmd(cmd *cobra.Command, args []string) error {
-	contracts := contract.LoadBridgeContracts()
+	contracts := ethContract.LoadBridgeContracts()
 
-	// Compile contracts, generating contract bins and abis
-	err := contract.CompileContracts(contracts)
+	// Compile contracts, generating ethContract bins and abis
+	err := ethContract.CompileContracts(contracts)
 	if err != nil {
 		return err
 	}
 
-	// Generate contract bindings from bins and abis
-	return contract.GenerateBindings(contracts)
+	// Generate ethContract bindings from bins and abis
+	return ethContract.GenerateBindings(contracts)
 }
 
 func initConfig(cmd *cobra.Command) error {

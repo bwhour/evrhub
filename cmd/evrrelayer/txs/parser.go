@@ -74,7 +74,7 @@ func EthereumEventToEthBridgeClaim(valAddr sdk.ValAddress, event *types.Ethereum
 	witnessClaim.Symbol = symbol
 	witnessClaim.EthereumSender = sender
 	witnessClaim.ValidatorAddress = valAddr
-	witnessClaim.CosmosReceiver = recipient
+	witnessClaim.EvrnetReceiver = recipient
 	witnessClaim.Amount = amount
 	witnessClaim.ClaimType = event.ClaimType
 
@@ -123,8 +123,8 @@ func EvrnetMsgToProphecyClaim(event types.EvrnetMsg) ProphecyClaim {
 	return prophecyClaim
 }
 
-// BurnLockEventToCosmosMsg parses data from a Burn/Lock event witnessed on Cosmos into a EvrnetMsg struct
-func BurnLockEventToCosmosMsg(claimType types.Event, attributes []tmKv.Pair) types.EvrnetMsg {
+// BurnLockEventToEvrnetMsg parses data from a Burn/Lock event witnessed on Evrnet into a EvrnetMsg struct
+func BurnLockEventToEvrnetMsg(claimType types.Event, attributes []tmKv.Pair) types.EvrnetMsg {
 	var evrnetSender []byte
 	var ethereumReceiver common.Address
 	var symbol string

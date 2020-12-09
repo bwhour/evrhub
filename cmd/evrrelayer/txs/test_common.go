@@ -72,7 +72,7 @@ func CreateTestProphecyClaimEvent(t *testing.T) types.ProphecyClaimEvent {
 		testTokenAddress, TestBurnClaimType)
 }
 
-// CreateTestEvrnetMsg creates a sample Cosmos Msg for testing purposes
+// CreateTestEvrnetMsg creates a sample Evrnet Msg for testing purposes
 func CreateTestEvrnetMsg(t *testing.T, claimType types.Event) types.EvrnetMsg {
 	testEvrnetSender := []byte(TestEvrnetAddress1)
 	testEthereumReceiver := common.HexToAddress(TestEthereumAddress1)
@@ -86,7 +86,7 @@ func CreateTestEvrnetMsg(t *testing.T, claimType types.Event) types.EvrnetMsg {
 		symbol = TestSymbol
 	}
 
-	// Create new Cosmos Msg
+	// Create new Evrnet Msg
 	cosmosMsg := types.NewEvrnetMsg(claimType, testEvrnetSender,
 		testEthereumReceiver, symbol, testAmount)
 
@@ -97,9 +97,9 @@ func CreateTestEvrnetMsg(t *testing.T, claimType types.Event) types.EvrnetMsg {
 func CreateCosmosMsgAttributes(t *testing.T, claimType types.Event) []tmKv.Pair {
 	attributes := [5]tmKv.Pair{}
 
-	// (key, value) pairing for "cosmos_sender" key
+	// (key, value) pairing for "evrnet_sender" key
 	pairEvrnetSender := tmKv.Pair{
-		Key:   []byte("cosmos_sender"),
+		Key:   []byte("evrnet_sender"),
 		Value: []byte(TestEvrnetAddress1),
 	}
 

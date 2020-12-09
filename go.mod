@@ -10,7 +10,7 @@ require (
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/ethereum/go-ethereum v1.9.10
 	github.com/fjl/memsize v0.0.0-20190710130421-bcb5799ab5e5 // indirect
-	github.com/gorilla/mux v1.7.4
+	github.com/gorilla/mux v1.7.4 // indirect
 	github.com/huin/goupnp v1.0.0 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
 	github.com/joho/godotenv v1.3.0
@@ -24,7 +24,7 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.6.3
 	github.com/stretchr/testify v1.6.1
-	github.com/tendermint/go-amino v0.15.1
+	github.com/tendermint/go-amino v0.15.1 // indirect
 	github.com/tendermint/tendermint v0.33.7
 	github.com/tendermint/tm-db v0.5.1
 )

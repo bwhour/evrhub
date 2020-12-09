@@ -2,9 +2,7 @@ package types
 
 import (
 	"encoding/json"
-
-	"github.com/Evrynetlabs/evrsdk/x/staking"
-
+	"github.com/Evrynetlabs/evrhub/x/ethbridge/types"
 	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
@@ -26,7 +24,7 @@ type Prophecy struct {
 	// an so iterating over them could result in consensus failure. New code should not iterate over the below 2 mappings.
 
 	//This is a mapping from a claim to the list of validators that made that claim.
-	ClaimValidators map[string][]sdk.ValAddress `json:"claim_validators"`
+	ClaimValidators map[string] types.EvrnetAddress `json:"claim_validators"`
 	//This is a mapping from a validator bech32 address to their claim
 	ValidatorClaims map[string]string `json:"validator_claims"`
 }
@@ -66,7 +64,7 @@ func (prophecy Prophecy) SerializeForDB() (DBProphecy, error) {
 
 // DeserializeFromDB deserializes a DBProphecy into a prophecy
 func (dbProphecy DBProphecy) DeserializeFromDB() (Prophecy, error) {
-	var claimValidators map[string][]sdk.ValAddress
+	var claimValidators map[string] types.EvrnetAddress
 	if err := json.Unmarshal(dbProphecy.ClaimValidators, &claimValidators); err != nil {
 		return Prophecy{}, err
 	}
@@ -85,7 +83,7 @@ func (dbProphecy DBProphecy) DeserializeFromDB() (Prophecy, error) {
 }
 
 // AddClaim adds a given claim to this prophecy
-func (prophecy Prophecy) AddClaim(validator sdk.ValAddress, claim string) {
+func (prophecy Prophecy) AddClaim(validator types.EvrnetAddress, claim string) {
 	claimValidators := prophecy.ClaimValidators[claim]
 	prophecy.ClaimValidators[claim] = append(claimValidators, validator)
 

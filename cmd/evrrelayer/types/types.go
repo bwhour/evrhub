@@ -48,8 +48,8 @@ type EthereumEvent struct {
 
 // String implements fmt.Stringer
 func (e EthereumEvent) String() string {
-	return fmt.Sprintf("\nChain ID: %v\nBridge contract address: %v\nToken symbol: %v\nToken "+
-		"contract address: %v\nSender: %v\nRecipient: %v\nValue: %v\nNonce: %v\nClaim type: %v",
+	return fmt.Sprintf("\nChain ID: %v\nBridge ethContract address: %v\nToken symbol: %v\nToken "+
+		"ethContract address: %v\nSender: %v\nRecipient: %v\nValue: %v\nNonce: %v\nClaim type: %v",
 		e.EthereumChainID, e.BridgeContractAddress.Hex(), e.Symbol, e.Token.Hex(), e.From.Hex(),
 		string(e.To), e.Value, e.Nonce, e.ClaimType.String())
 }

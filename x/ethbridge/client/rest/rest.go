@@ -1,20 +1,17 @@
 package rest
+/*
+import "github.com/Evrynetlabs/evrsdk/types/rest"
+
 
 import (
 	"fmt"
+	"github.com/Evrynetlabs/evrsdk/types/rest"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"github.com/Evrynetlabs/evrsdk/client/context"
-	"github.com/Evrynetlabs/evrsdk/types/rest"
-	"github.com/Evrynetlabs/evrsdk/x/auth/client/utils"
-
 	"github.com/gorilla/mux"
-
 	"github.com/Evrynetlabs/evrhub/x/ethbridge/types"
-
-	sdk "github.com/Evrynetlabs/evrsdk/types"
 )
 
 const (
@@ -34,7 +31,7 @@ type createEthClaimReq struct {
 	Symbol                string       `json:"symbol"`
 	TokenContractAddress  string       `json:"token_contract_address"`
 	EthereumSender        string       `json:"ethereum_sender"`
-	CosmosReceiver        string       `json:"cosmos_receiver"`
+	EvrnetReceiver        string       `json:"evrnet_Receiver"`
 	Validator             string       `json:"validator"`
 	Amount                int64        `json:"amount"`
 	ClaimType             string       `json:"claim_type"`
@@ -44,21 +41,10 @@ type burnOrLockEthReq struct {
 	BaseReq          rest.BaseReq `json:"base_req"`
 	EthereumChainID  string       `json:"ethereum_chain_id"`
 	TokenContract    string       `json:"token_contract_address"`
-	EvrnetSender     string       `json:"cosmos_sender"`
+	EvrnetSender     string       `json:"evrnet_sender"`
 	EthereumReceiver string       `json:"ethereum_receiver"`
 	Amount           int64        `json:"amount"`
 	Symbol           string       `json:"symbol"`
-}
-
-// RegisterRESTRoutes - Central function to define routes that get registered by the main application
-func RegisterRESTRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
-	r.HandleFunc(fmt.Sprintf("/%s/prophecies", storeName), createClaimHandler(cliCtx)).Methods("POST")
-	r.HandleFunc(
-		fmt.Sprintf("/%s/prophecies/{%s}/{%s}/{%s}/{%s}/{%s}/{%s}",
-			storeName, restEthereumChainID, restBridgeContract, restNonce, restSymbol, restTokenContract, restEthereumSender),
-		getProphecyHandler(cliCtx, storeName)).Methods("GET")
-	r.HandleFunc(fmt.Sprintf("/%s/burn", storeName), burnOrLockHandler(cliCtx, "burn")).Methods("POST")
-	r.HandleFunc(fmt.Sprintf("/%s/lock", storeName), burnOrLockHandler(cliCtx, "lock")).Methods("POST")
 }
 
 func createClaimHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -81,7 +67,7 @@ func createClaimHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 		ethereumSender := types.NewEthereumAddress(req.EthereumSender)
 
-		cosmosReceiver, err := sdk.AccAddressFromBech32(req.CosmosReceiver)
+		evrnetReceiver, err := sdk.AccAddressFromBech32(req.EvrnetReceiver)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -101,7 +87,7 @@ func createClaimHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		// create the message
 		ethBridgeClaim := types.NewEthBridgeClaim(
 			req.EthereumChainID, bridgeContractAddress, req.Nonce, req.Symbol,
-			tokenContractAddress, ethereumSender, cosmosReceiver, validator, req.Amount, claimType)
+			tokenContractAddress, ethereumSender, evrnetReceiver, validator, req.Amount, claimType)
 		msg := types.NewMsgCreateEthBridgeClaim(ethBridgeClaim)
 		err = msg.ValidateBasic()
 		if err != nil {
@@ -207,3 +193,4 @@ func burnOrLockHandler(cliCtx context.CLIContext, lockOrBurn string) http.Handle
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
+*/

@@ -6,6 +6,8 @@ import (
 
 	gethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	evrCommon "github.com/Evrynetlabs/evrynet-node/common"
+	evrhexutil "github.com/Evrynetlabs/evrynet-node/common/hexutil"
 )
 
 const PeggedCoinPrefix = "peggy"
@@ -31,4 +33,26 @@ func (ethAddr EthereumAddress) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON unmarshals an ethereum address
 func (ethAddr *EthereumAddress) UnmarshalJSON(input []byte) error {
 	return hexutil.UnmarshalFixedJSON(reflect.TypeOf(gethCommon.Address{}), input, ethAddr[:])
+}
+// EvrnetAddress defines a standard ethereum address
+type EvrnetAddress evrCommon.Address
+
+// NewEvrnetAddress is a constructor function for EthereumAddress
+func NewEvrnetAddress(address string) EvrnetAddress {
+	return EvrnetAddress(evrCommon.HexToAddress(address))
+}
+
+// Route should return the name of the module
+func (evrAddr EvrnetAddress) String() string {
+	return evrCommon.Address(ethAddr).String()
+}
+
+// MarshalJSON marshals the evrnet address to JSON
+func (evrAddr EvrnetAddress) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf("\"%v\"", evrAddr.String())), nil
+}
+
+// UnmarshalJSON unmarshals an evrnet address
+func (evrAddr *EvrnetAddress) UnmarshalJSON(input []byte) error {
+	return evrhexutil.UnmarshalFixedJSON(reflect.TypeOf(evrCommon.Address{}), input, evrAddr[:])
 }
