@@ -1,0 +1,5 @@
+# Build
+./ethrelayer/ethrelayer
+./evrrelayer/evrrelayer
+.abi
+.bin

@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-
-	ethbridge "github.com/Evrynetlabs/evrhub/x/ethbridge/types"
+	xcommon "github.com/Evrynetlabs/evrhub/x/common/types"
+	"github.com/Evrynetlabs/evrynet-node/common"
 )
 
 // Event enum containing supported chain events
@@ -15,13 +14,13 @@ type Event byte
 const (
 	// Unsupported is an invalid Evrnet or Ethereum event
 	Unsupported Event = iota
-	// MsgBurn is a Evrnet msg of type MsgBurn
+	// MsgBurn is a Ethereum msg of type MsgBurn
 	MsgBurn
-	// MsgLock is a Evrnet msg of type MsgLock
+	// MsgLock is a Ethereum msg of type MsgLock
 	MsgLock
-	// LogLock is for Ethereum event LogLock
+	// LogLock is for Evrnet event LogLock
 	LogLock
-	// LogBurn is for Ethereum event LogBurn
+	// LogBurn is for Evrnet event LogBurn
 	LogBurn
 	// LogNewProphecyClaim is an Ethereum event named 'LogNewProphecyClaim'
 	LogNewProphecyClaim
@@ -32,113 +31,44 @@ func (d Event) String() string {
 	return [...]string{"unsupported", "burn", "lock", "LogLock", "LogBurn", "LogNewProphecyClaim"}[d]
 }
 
-// EthereumEvent struct is used by LogLock and LogBurn
-type EthereumEvent struct {
-	EthereumChainID       *big.Int
+// EvrnetEvent struct is used by LogLock and LogBurn
+type EvrnetEvent struct {
+	EvrnetChainID         *big.Int
 	BridgeContractAddress common.Address
 	ID                    [32]byte
 	From                  common.Address
-	To                    []byte
+	To                    common.Address
 	Token                 common.Address
 	Symbol                string
 	Value                 *big.Int
 	Nonce                 *big.Int
-	ClaimType             ethbridge.ClaimType
+	ClaimType             xcommon.ClaimType
 }
 
 // String implements fmt.Stringer
-func (e EthereumEvent) String() string {
-	return fmt.Sprintf("\nChain ID: %v\nBridge contract address: %v\nToken symbol: %v\nToken "+
-		"contract address: %v\nSender: %v\nRecipient: %v\nValue: %v\nNonce: %v\nClaim type: %v",
-		e.EthereumChainID, e.BridgeContractAddress.Hex(), e.Symbol, e.Token.Hex(), e.From.Hex(),
-		string(e.To), e.Value, e.Nonce, e.ClaimType.String())
+func (e EvrnetEvent) String() string {
+	return fmt.Sprintf("\nChain ID: %v\nBridge evrcontract address: %v\nToken symbol: %v\nToken "+
+		"evrcontract address: %v\nSender: %v\nRecipient: %v\nValue: %v\nNonce: %v\nClaim type: %v",
+		e.EvrnetChainID, e.BridgeContractAddress.Hex(), e.Symbol, e.Token.Hex(), e.From.Hex(),
+		e.To.Hex(), e.Value, e.Nonce, e.ClaimType.String())
 }
 
 // ProphecyClaimEvent struct which represents a LogNewProphecyClaim event
 type ProphecyClaimEvent struct {
-	EvrnetSender     []byte
+	EthereumSender   common.Address
 	Symbol           string
 	ProphecyID       *big.Int
 	Amount           *big.Int
-	EthereumReceiver common.Address
+	EvrnetReceiver   common.Address
 	ValidatorAddress common.Address
 	TokenAddress     common.Address
 	ClaimType        uint8
-}
-
-// NewProphecyClaimEvent creates a new ProphecyClaimEvent
-func NewProphecyClaimEvent(evrnetSender []byte, symbol string, prophecyID, amount *big.Int, ethereumReceiver,
-	validatorAddress, tokenAddress common.Address, claimType uint8) ProphecyClaimEvent {
-	return ProphecyClaimEvent{
-		EvrnetSender:     evrnetSender,
-		Symbol:           symbol,
-		ProphecyID:       prophecyID,
-		Amount:           amount,
-		EthereumReceiver: ethereumReceiver,
-		ValidatorAddress: validatorAddress,
-		TokenAddress:     tokenAddress,
-		ClaimType:        claimType,
-	}
 }
 
 // String implements fmt.Stringer
 func (p ProphecyClaimEvent) String() string {
 	return fmt.Sprintf("\nProphecy ID: %v\nClaim Type: %v\nSender: %v\n"+
 		"Recipient: %v\nSymbol: %v\nToken: %v\nAmount: %v\nValidator: %v\n\n",
-		p.ProphecyID, p.ClaimType, string(p.EvrnetSender), p.EthereumReceiver.Hex(),
+		p.ProphecyID, p.ClaimType, p.EthereumSender.Hex(), p.EvrnetReceiver.Hex(),
 		p.Symbol, p.TokenAddress.Hex(), p.Amount, p.ValidatorAddress.Hex())
-}
-
-// EvrnetMsg contains data from MsgBurn and MsgLock events
-type EvrnetMsg struct {
-	ClaimType        Event
-	EvrnetSender     []byte
-	EthereumReceiver common.Address
-	Symbol           string
-	Amount           *big.Int
-}
-
-// NewEvrnetMsg creates a new EvrnetMsg
-func NewEvrnetMsg(claimType Event, evrnetSender []byte, ethereumReceiver common.Address, symbol string,
-	amount *big.Int) EvrnetMsg {
-	return EvrnetMsg{
-		ClaimType:        claimType,
-		EvrnetSender:     evrnetSender,
-		EthereumReceiver: ethereumReceiver,
-		Symbol:           symbol,
-		Amount:           amount,
-	}
-}
-
-// String implements fmt.Stringer
-func (c EvrnetMsg) String() string {
-	if c.ClaimType == MsgLock {
-		return fmt.Sprintf("\nClaim Type: %v\nEvrnet Sender: %v\nEthereum Recipient: %v"+
-			"\nSymbol: %v\nAmount: %v\n",
-			c.ClaimType.String(), string(c.EvrnetSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
-	}
-	return fmt.Sprintf("\nClaim Type: %v\nEvrnet Sender: %v\nEthereum Recipient: %v"+
-		"\nSymbol: %v\nAmount: %v\n",
-		c.ClaimType.String(), string(c.EvrnetSender), c.EthereumReceiver.Hex(), c.Symbol, c.Amount)
-}
-
-// EvrnetMsgAttributeKey enum containing supported attribute keys
-type EvrnetMsgAttributeKey int
-
-const (
-	// UnsupportedAttributeKey unsupported attribute key
-	UnsupportedAttributeKey EvrnetMsgAttributeKey = iota
-	// EvrnetSender sender's address on Evrnet network
-	EvrnetSender
-	// EthereumReceiver receiver's address on Ethereum network
-	EthereumReceiver
-	// Amount is coin's value
-	Amount
-	// Symbol is the coin type
-	Symbol
-)
-
-// String returns the event type as a string
-func (d EvrnetMsgAttributeKey) String() string {
-	return [...]string{"unsupported", "evrnet_sender", "ethereum_receiver", "amount", "symbol"}[d]
 }

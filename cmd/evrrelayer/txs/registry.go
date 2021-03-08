@@ -2,30 +2,28 @@ package txs
 
 import (
 	"context"
+	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/evrcontract/generated/bindings/bridgeregistry"
+	evrBind "github.com/Evrynetlabs/evrynet-node/accounts/abi/bind"
+	"github.com/Evrynetlabs/evrynet-node/common"
+	"github.com/Evrynetlabs/evrynet-node/evrclient"
 	"log"
-
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
-
-	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/contract/generated/bindings/bridgeregistry"
 )
 
-// TODO: Update BridgeRegistry contract so that all bridge contract addresses can be queried
+// TODO: Update BridgeRegistry evrcontract so that all bridge evrcontract addresses can be queried
 //		in one transaction. Then refactor ContractRegistry to a map and store it under new
 //		Relayer struct.
 
-// ContractRegistry is an enum for the bridge contract types
+// ContractRegistry is an enum for the bridge evrcontract types
 type ContractRegistry byte
 
 const (
-	// Valset valset contract
+	// Valset valset evrcontract
 	Valset ContractRegistry = iota + 1
-	// Oracle oracle contract
+	// Oracle evrcontract
 	Oracle
-	// BridgeBank bridgeBank contract
+	// BridgeBank bridgeBank evrcontract
 	BridgeBank
-	// EvrnetBridge cosmosBridge contract
+	// EvrnetBridge evrnetBridge evrcontract
 	EvrnetBridge
 )
 
@@ -34,10 +32,10 @@ func (d ContractRegistry) String() string {
 	return [...]string{"valset", "oracle", "bridgebank", "evrnetbridge"}[d-1]
 }
 
-// GetAddressFromBridgeRegistry queries the requested contract address from the BridgeRegistry contract
-func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Address, target ContractRegistry,
+// GetAddressFromBridgeRegistry queries the requested evrcontract address from the BridgeRegistry evrcontract
+func GetAddressFromBridgeRegistry(client *evrclient.Client, registry common.Address, target ContractRegistry,
 ) (common.Address, error) {
-	sender, err := LoadSender()
+	sender, err := LoadEvrSender()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,13 +46,14 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 	}
 
 	// Set up CallOpts auth
-	auth := bind.CallOpts{
+	//var xxx *big.Int
+	//var sender .Address
+	auth := evrBind.CallOpts{
 		Pending:     true,
 		From:        sender,
 		BlockNumber: header.Number,
 		Context:     context.Background(),
 	}
-
 	// Initialize BridgeRegistry instance
 	registryInstance, err := bridgeregistry.NewBridgeRegistry(registry, client)
 	if err != nil {
@@ -72,7 +71,7 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 	case EvrnetBridge:
 		address, err = registryInstance.EvrnetBridge(&auth)
 	default:
-		panic("invalid target contract address")
+		panic("invalid target evrcontract address")
 	}
 
 	if err != nil {
@@ -81,3 +80,5 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 
 	return address, nil
 }
+
+
