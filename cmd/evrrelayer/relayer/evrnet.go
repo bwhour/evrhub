@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
+	"math/big"
+	"os"
+
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/evrcontract"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/rpc/client"
 	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/txs"
@@ -13,8 +16,6 @@ import (
 	"github.com/Evrynetlabs/evrynet-node/common"
 	ctypes "github.com/Evrynetlabs/evrynet-node/core/types"
 	"github.com/Evrynetlabs/evrynet-node/evrclient"
-	"math/big"
-	"os"
 
 	xcommon "github.com/Evrynetlabs/evrhub/x/common/types"
 	evrcommon "github.com/Evrynetlabs/evrynet-node/common"

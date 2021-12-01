@@ -4,10 +4,11 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
-	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/ethcontract"
-	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/rpc/client"
 	"math/big"
 	"os"
+
+	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/ethcontract"
+	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/rpc/client"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -55,7 +56,6 @@ func LoadValidatorCredentials(validatorFrom string) ([]byte, string, error) {
 	var err error
 	return []byte{}, "", err
 }
-
 
 // Start an Ethereum chain subscription
 func (sub EthereumSub) Start() {
@@ -161,11 +161,11 @@ func (sub EthereumSub) handleEthereumEvent(clientChainID *big.Int, contractAddre
 	types.NewEventWrite(cLog.TxHash.Hex(), event)
 
 	prophecyClaim := xcommon.EthProphecyClaim{
-		ClaimType:        event.ClaimType,
-		EthereumSender:   xcommon.NewEthereumAddress(event.From.Hex()),
-		EvrnetReceiver:   xcommon.NewEvrnetAddress(event.To.Hex()),
-		Symbol:           event.Symbol,
-		Amount:           event.Value.String(),
+		ClaimType:      event.ClaimType,
+		EthereumSender: xcommon.NewEthereumAddress(event.From.Hex()),
+		EvrnetReceiver: xcommon.NewEvrnetAddress(event.To.Hex()),
+		Symbol:         event.Symbol,
+		Amount:         event.Value.String(),
 	}
 
 	//send claim to EthRelayer

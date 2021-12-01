@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"github.com/golang/glog"
 	"io"
 	"io/ioutil"
 	"net"
@@ -12,6 +11,8 @@ import (
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/golang/glog"
 )
 
 var netClient *http.Client
@@ -35,7 +36,7 @@ func GetHTTPClient() *http.Client {
 			TLSHandshakeTimeout:   5 * time.Second,
 			ResponseHeaderTimeout: 5 * time.Second,
 			ExpectContinueTimeout: 1 * time.Second,
-			Proxy: proxy,
+			Proxy:                 proxy,
 		}
 
 		netClient = &http.Client{

@@ -2,9 +2,10 @@ package relayer
 
 import (
 	"fmt"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"net/url"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 // IsWebsocketURL returns true if the given URL is a websocket URL
@@ -33,4 +34,3 @@ func SetupWebsocketEthClient(ethURL string) (*ethclient.Client, error) {
 
 	return client, nil
 }
-

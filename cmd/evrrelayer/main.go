@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/evrcontract"
-	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/rpc/service"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/evrcontract"
+	"github.com/Evrynetlabs/evrhub/cmd/evrrelayer/rpc/service"
 
 	"github.com/Evrynetlabs/evrhub/flags"
 	evrcommon "github.com/Evrynetlabs/evrynet-node/common"

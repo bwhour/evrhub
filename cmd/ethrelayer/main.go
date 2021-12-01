@@ -14,12 +14,10 @@ import (
 	"github.com/tendermint/tendermint/libs/cli"
 	tmLog "github.com/tendermint/tendermint/libs/log"
 
-	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/relayer"
-	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/txs"
 	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/ethcontract"
+	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/relayer"
 	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/rpc/service"
-
-
+	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/txs"
 )
 
 const (

@@ -18,7 +18,6 @@ func NewEventWrite(txHash string, event EvrnetEvent) {
 	EventRecords[txHash] = event
 }
 
-
 // PrintEventByTx prints any witnessed events associated with a given transaction hash
 func PrintEventByTx(txHash string) {
 	if IsEventRecorded(txHash) {

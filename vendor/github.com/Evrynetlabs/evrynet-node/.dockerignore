@@ -1,7 +1,0 @@
-build/_workspace
-build/_bin
-tests/testdata
-tests/test_nodes/*
-dev/**/*.ipc
-vendor/*
-*.log

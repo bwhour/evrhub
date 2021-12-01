@@ -2,12 +2,13 @@ package txs
 
 import (
 	"crypto/ecdsa"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/joho/godotenv"
 
 	"github.com/Evrynetlabs/evrhub/cmd/ethrelayer/types"
 )
@@ -77,6 +78,3 @@ func SignClaim(msg []byte, key *ecdsa.PrivateKey) ([]byte, error) {
 	}
 	return sig, nil
 }
-
-
-

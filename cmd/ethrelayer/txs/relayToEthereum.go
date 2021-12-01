@@ -4,10 +4,11 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
-	xcommon "github.com/Evrynetlabs/evrhub/x/common/types"
 	"log"
 	"math/big"
 	"strings"
+
+	xcommon "github.com/Evrynetlabs/evrhub/x/common/types"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -20,7 +21,7 @@ import (
 
 const (
 	// GasLimit the gas limit in Gwei used for transactions sent with TransactOpts
-	GasLimit = uint64(3000000)
+	GasLimit      = uint64(3000000)
 	DefaultPrefix = "PEGGY"
 )
 

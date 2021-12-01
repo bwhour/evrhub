@@ -2,9 +2,10 @@ package relayer
 
 import (
 	"fmt"
-	"github.com/Evrynetlabs/evrynet-node/evrclient"
 	"net/url"
 	"strings"
+
+	"github.com/Evrynetlabs/evrynet-node/evrclient"
 )
 
 // IsWebsocketURL returns true if the given URL is a websocket URL
@@ -33,4 +34,3 @@ func SetupWebsocketEvrClient(ethURL string) (*evrclient.Client, error) {
 
 	return client, nil
 }
-

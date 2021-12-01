@@ -12,10 +12,10 @@ import (
 
 var (
 	// functions aliases
-	NewEthereumAddress                = types.NewEthereumAddress
+	NewEthereumAddress = types.NewEthereumAddress
 )
 
 type (
-	EthereumAddress          = types.EthereumAddress
-	EvrnetAddress            = types.EvrnetAddress
+	EthereumAddress = types.EthereumAddress
+	EvrnetAddress   = types.EvrnetAddress
 )

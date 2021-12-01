@@ -1,9 +1,10 @@
 package util
 
 import (
+	"strings"
+
 	"github.com/golang/glog"
 	"github.com/labstack/echo/v4"
-	"strings"
 )
 
 type Handler func(c echo.Context) error

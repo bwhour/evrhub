@@ -2,9 +2,10 @@ package types
 
 import (
 	"fmt"
+	"math/big"
+
 	xcommon "github.com/Evrynetlabs/evrhub/x/common/types"
 	"github.com/ethereum/go-ethereum/common"
-	"math/big"
 )
 
 // Event enum containing supported chain events

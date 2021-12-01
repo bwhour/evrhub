@@ -1,9 +1,10 @@
 package rpc
 
 import (
+	"io/ioutil"
+
 	"github.com/golang/glog"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 )
 
 type Config struct {

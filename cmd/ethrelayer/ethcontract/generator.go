@@ -72,6 +72,6 @@ func GenerateBindings(contracts BridgeContracts) error {
 // execCmd executes a bash cmd
 func execCmd(cmd string) error {
 	_, err := exec.Command("sh", "-c", cmd).Output()
-	fmt.Println("cmd: "+cmd)
+	fmt.Println("cmd: " + cmd)
 	return err
 }

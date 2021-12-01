@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	nullAddress   = "0x0000000000000000000000000000000000000000"
+	nullAddress = "0x0000000000000000000000000000000000000000"
 )
 
 // ProphecyClaimToSignedOracleClaim packages and signs a prophecy claim's data, returning a new oracle claim

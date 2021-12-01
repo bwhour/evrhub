@@ -2,11 +2,12 @@ package txs
 
 import (
 	"context"
+	"log"
+
 	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/evrrelayer/evrcontract/generated/bindings/bridgeregistry"
 	evrBind "github.com/Evrynetlabs/evrynet-node/accounts/abi/bind"
 	"github.com/Evrynetlabs/evrynet-node/common"
 	"github.com/Evrynetlabs/evrynet-node/evrclient"
-	"log"
 )
 
 // TODO: Update BridgeRegistry evrcontract so that all bridge evrcontract addresses can be queried
@@ -80,5 +81,3 @@ func GetAddressFromBridgeRegistry(client *evrclient.Client, registry common.Addr
 
 	return address, nil
 }
-
-

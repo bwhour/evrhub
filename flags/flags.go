@@ -1,12 +1,12 @@
 package flags
 
 import (
-"fmt"
-"os"
-"strconv"
+	"fmt"
+	"os"
+	"strconv"
 
-"github.com/spf13/cobra"
-"github.com/spf13/viper"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // nolint
@@ -207,4 +207,3 @@ To configure your bash shell to load completions for each session add to your ba
 
 	return cmd
 }
-

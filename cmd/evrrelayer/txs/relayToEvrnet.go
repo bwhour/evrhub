@@ -21,7 +21,7 @@ import (
 
 const (
 	// GasLimit the gas limit in Gwei used for transactions sent with TransactOpts
-	GasLimit = uint64(3000000)
+	GasLimit      = uint64(3000000)
 	DefaultPrefix = "PEGGY"
 )
 

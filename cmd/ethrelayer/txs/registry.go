@@ -2,11 +2,13 @@ package txs
 
 import (
 	"context"
+
 	ethBind "github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"log"
+
 	bridgeregistry "github.com/Evrynetlabs/evrhub/cmd/ethrelayer/ethcontract/generated/bindings/bridgeregistry"
 )
 
@@ -80,4 +82,3 @@ func GetAddressFromBridgeRegistry(client *ethclient.Client, registry common.Addr
 
 	return address, nil
 }
-

@@ -2,9 +2,10 @@ package types
 
 import (
 	"encoding/json"
-	"github.com/golang/glog"
 	"io"
 	"io/ioutil"
+
+	"github.com/golang/glog"
 )
 
 func EvrProphecyClaimToJsonString(e *EvrProphecyClaim) string {
